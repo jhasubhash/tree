@@ -1,26 +1,37 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import $ from 'jquery';
+import Header from './Components/header';
+import TreeContainer from './Components/treeContainer';
+import json from './json';
+import { connect } from 'react-redux';
+import { resize } from './Reducers/actions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './style.css';
+
+$(window).on('resize', resize);
+
+const propTypes = {
+	activeNode: PropTypes.string,
+	filter: PropTypes.string.isRequired,
+	height: PropTypes.number.isRequired,
+	width: PropTypes.number.isRequired
+};
+
+class App extends React.PureComponent {
+	render() {
+		return (
+			<div id="container">
+				<Header filter={this.props.filter} timestamp={json.timestamp}/>
+				<TreeContainer
+					activeNode={this.props.activeNode}
+					data={json}
+					filter={this.props.filter}
+					height={this.props.height}
+					width={this.props.width}/>
+			</div>);
+	}
 }
 
-export default App;
+App.propTypes = propTypes;
+export default App = connect(state => state)(App);
