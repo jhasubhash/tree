@@ -30,6 +30,12 @@ export default class TreeContainer extends React.PureComponent {
 		return false;
 	}
 
+	setActiveStyle(node){
+		/*resetStyle(this.lastActiveNode);
+		node.pathProps = {className: 'activelink'};
+		node.textProps = */
+	}
+
 	getParent(node) {
 		if(node.parent){
 			let parent = this.getRoot(this.props.data, node.parent);
@@ -78,6 +84,7 @@ export default class TreeContainer extends React.PureComponent {
 
 	render() {
 		let root = this.props.activeNode ? this.getRoot(this.props.data, this.props.activeNode) : this.props.data;
+		this.setActiveStyle(root);
 		root = this.getParent(root);
 		root = clone(root);
 

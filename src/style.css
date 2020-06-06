@@ -31,6 +31,12 @@ path.link {
 	stroke-width: 1.5px;
 }
 
+path.activelink {
+	fill: none;
+	stroke: #2593B8;
+	stroke-width: 2.5px;
+}
+
 body {
 	background-color: #242424;
 	overflow: hidden;

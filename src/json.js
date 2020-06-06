@@ -15,7 +15,7 @@ export default {
 				name: 'Arya Jha10',
 				children: []
 			},{
-				name: 'Arya Jha',
+				name: 'Aastha Jha',
 				children: []
 			}]
 		}, {
@@ -36,7 +36,10 @@ export default {
 		}, {
 			name: 'Shilpa Bharati',
 			children: []
-		}]
+		}],
+		partner: {
+			name: 'Renu Jha',
+		}
 	}, {
 		name: 'Dhirendra Jha',
 		children: [{
@@ -121,7 +124,7 @@ export default {
 				children: []
 			}]
 		}, {
-			name: 'Buchiya Jha',
+			name: 'Priya Jha',
 			children: [{
 				name: 'Child 1',
 				children: []
@@ -130,6 +133,9 @@ export default {
 			name: 'Aditya Nath Jha',
 			children: [{
 				name: 'Child 1',
+				children: []
+			}, {
+				name: 'Child 2',
 				children: []
 			}]
 		}]
