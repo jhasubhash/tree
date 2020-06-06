@@ -23,7 +23,7 @@ export default class Header extends React.PureComponent {
 			<div id="header">
 				<Filter filter={this.props.filter}/>
 				<button onClick={this.handleClick}>Reset</button>
-				<span>Last Updated: {this.props.timestamp}</span>
+				{false && <span>Last Updated: {this.props.timestamp}</span>}
 			</div>);
 	}
 }

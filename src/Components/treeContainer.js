@@ -17,17 +17,31 @@ export default class TreeContainer extends React.PureComponent {
 		setActiveNode(node);
 	}
 
-	getRoot(json) {
-		if (json.name === this.props.activeNode) {
+	getRoot(json, nodeId) {
+		if (json.id === nodeId) {
 			return json;
 		}
 		for (let i = 0; i < json.children.length; i++) {
-			let childJson = this.getRoot(json.children[i]);
+			let childJson = this.getRoot(json.children[i], nodeId);
 			if (childJson) {
 				return childJson;
 			}
 		}
 		return false;
+	}
+
+	getParent(node) {
+		if(node.parent){
+			let parent = this.getRoot(this.props.data, node.parent);
+			let idx = 0;
+			let mid = parent.children.length/2;
+			for(; idx< parent.children.length; idx++)
+				if(parent.children[idx].id === node.id) break;
+			if(!(!(parent.children.length%2) && idx === mid-1))
+			[parent.children[idx],parent.children[mid]] = [parent.children[mid],parent.children[idx]];
+			return parent;
+		}
+		return node;
 	}
 
 	buildSubTree(root) {
@@ -63,8 +77,8 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	render() {
-		let root = this.props.activeNode ? this.getRoot(this.props.data) : this.props.data;
-
+		let root = this.props.activeNode ? this.getRoot(this.props.data, this.props.activeNode) : this.props.data;
+		root = this.getParent(root);
 		root = clone(root);
 
 		if (this.props.filter) {
@@ -79,6 +93,7 @@ export default class TreeContainer extends React.PureComponent {
 				data={root}
 				height={this.props.height}
 				width={this.props.width}
+				keyProp={"id"}
 				gProps={{
 					className: 'node',
 					onClick: this.handleClick

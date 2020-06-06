@@ -16,7 +16,7 @@ export default class Filter extends React.PureComponent {
 			<input
 				id="search"
 				type="text"
-				placeholder="Filter nodes..."
+				placeholder="Find Name ..."
 				value={this.props.filter}
 				onChange={this.handleChange}/>);
 	}
