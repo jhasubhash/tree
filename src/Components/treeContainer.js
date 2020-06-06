@@ -34,7 +34,7 @@ export default class TreeContainer extends React.PureComponent {
 		if(node.parent){
 			let parent = this.getRoot(this.props.data, node.parent);
 			let idx = 0;
-			let mid = parent.children.length/2;
+			let mid = Math.floor(parent.children.length/2);
 			for(; idx< parent.children.length; idx++)
 				if(parent.children[idx].id === node.id) break;
 			if(!(!(parent.children.length%2) && idx === mid-1))
