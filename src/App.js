@@ -22,8 +22,20 @@ class App extends React.PureComponent {
   constructor(props){
     super(props);
     this.id = 0;
-    this.json = this.addKeys(json);
+    this.treeContainerRef = React.createRef();
+    this.json = this.addIdToNode(json);
     this.addParent(this.json);
+    this.addIdToPartner(this.json);
+  }
+
+  addIdToPartner(node){
+    if(node.partner)
+    node.partner.id = (this.id++).toString();
+    if(node.children && node.children.length){
+      for(let i=0; i<node.children.length; i++){
+        this.addIdToPartner(node.children[i]);
+      }
+    }
   }
 
   addParent(node){
@@ -35,12 +47,12 @@ class App extends React.PureComponent {
     }
   }
 
-  addKeys(root){
+  addIdToNode(root){
 		if(!root) return root;
 		root.id = (this.id++).toString();
 		if(root.children && root.children.length > 0)
 			for (let i = 0; i < root.children.length; i++) {
-				this.addKeys(root.children[i]);
+				this.addIdToNode(root.children[i]);
 			}
 		return root;
   }

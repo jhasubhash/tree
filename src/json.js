@@ -1,58 +1,19 @@
 export default {
 	timestamp: '11/02/2019 22:00',
 	name: 'Maheshwar Jha',
+	partner: {
+		name: 'Ambika Jha',
+	},
 	children: [{
-		name: 'Arvind Jha',
-		children: [{
-			name: 'Jaya Jha',
-			children: [{
-				name: 'Aryaman Jha',
-				children: []
-			}]
-		}, {
-			name: 'Jyoti Jha',
-			children: [{
-				name: 'Arya Jha10',
-				children: []
-			},{
-				name: 'Aastha Jha',
-				children: []
-			}]
-		}, {
-			name: 'Prakash Jha',
-			children: []
-		}, {
-			name: 'Preeti Jha',
-			children: []
-		}]
-	}, {
-		name: 'Birendra Jha',
-		children: [{
-			name: 'Vikas Jha',
-			children: []
-		}, {
-			name: 'Subhash Jha',
-			children: []
-		}, {
-			name: 'Shilpa Bharati',
-			children: []
-		}],
-		partner: {
-			name: 'Renu Jha',
-		}
-	}, {
-		name: 'Dhirendra Jha',
-		children: [{
-			name: 'Neha Jha',
-			children: []
-		}, {
-			name: 'Nupur Jha',
-			children: []
-		}]
-	}, {
 		name: 'Manju Jha',
+		partner: {
+			name: 'Hemdhar Jha',
+		},
 		children: [{
 			name: 'Ambikesh Jha',
+			partner: {
+				name: 'Anu Jha',
+			},
 			children: [{
 				name: 'Aayushi Jha',
 				children: []
@@ -62,6 +23,9 @@ export default {
 			}]
 		}, {
 			name: 'Rajesh Jha',
+			partner: {
+				name: 'Nirjala Jha',
+			},
 			children: [{
 				name: 'Rajat Jha',
 				children: []
@@ -71,6 +35,9 @@ export default {
 			}]
 		}, {
 			name: 'Kamlesh Jha',
+			partner: {
+				name: 'Vandana Jha',
+			},
 			children: [{
 				name: 'Harshit Jha',
 				children: []
@@ -80,6 +47,9 @@ export default {
 			}]
 		}, {
 			name: 'Shailesh Jha',
+			partner: {
+				name: 'Dolly Jha',
+			},
 			children: [{
 				name: 'Child 1',
 				children: []
@@ -89,15 +59,63 @@ export default {
 			}]
 		}]
 	}, {
+		name: 'Arvind Jha',
+		partner: {
+			name: 'Sabri Devi',
+		},
+		children: [{
+			name: 'Jaya Jha',
+			partner: {
+				name: 'Awadhesh Jha',
+			},
+			children: [{
+				name: 'Aryaman Jha',
+				children: []
+			}]
+		}, {
+			name: 'Jyoti Pathak',
+			partner: {
+				name: 'Rajesh Pathak',
+			},
+			children: [{
+				name: 'Arya Jha10',
+				children: []
+			},{
+				name: 'Aastha Jha',
+				children: []
+			}]
+		}, {
+			name: 'Prakash Jha',
+			partner: {
+				name: 'Rishu Shandilya',
+			},
+			children: []
+		}, {
+			name: 'Preeti Jha',
+			partner: {
+				name: 'Swapnil Pathade',
+			},
+			children: []
+		}]
+	}, {
 		name: 'Sunita Jha',
+		partner: {
+			name: 'Bihari Jha',
+		},
 		children: [{
 			name: 'Chandan Jha',
+			partner: {
+				name: 'Kabita Jha',
+			},
 			children: [{
 				name: 'Vinamra Jha',
 				children: []
 			}]
 		}, {
 			name: 'Rachna Jha',
+			partner: {
+				name: 'Santosh Jha',
+			},
 			children: [{
 				name: 'Child 1',
 				children: []
@@ -107,9 +125,48 @@ export default {
 			}]
 		}]
 	}, {
+		name: 'Birendra Jha',
+		partner: {
+			name: 'Renu Jha',
+		},
+		children: [{
+			name: 'Vikas Jha',
+			partner: {
+				name: 'Niharica Jha',
+			},
+			children: []
+		}, {
+			name: 'Subhash Jha',
+			partner: {
+				name: 'Renuka Mishra',
+			},
+			children: []
+		}, {
+			name: 'Shilpa Bharati',
+			children: []
+		}]
+	}, {
+		name: 'Dhirendra Jha',
+		partner: {
+			name: 'Usha Jha',
+		},
+		children: [{
+			name: 'Neha Jha',
+			children: []
+		}, {
+			name: 'Nupur Jha',
+			children: []
+		}]
+	}, {
 		name: 'Sujata Jha',
+		partner: {
+			name: 'Amar Nath Jha',
+		},
 		children: [{
 			name: 'Kadambari Jha',
+			partner: {
+				name: 'BK Jha',
+			},
 			children: [{
 				name: 'Child 1',
 				children: []
@@ -119,6 +176,9 @@ export default {
 			}]
 		}, {
 			name: 'Shyam Nath Jha',
+			partner: {
+				name: 'Anjana Jha',
+			},
 			children: [{
 				name: 'Atharva Jha',
 				children: []
@@ -131,6 +191,9 @@ export default {
 			}]
 		}, {
 			name: 'Aditya Nath Jha',
+			partner: {
+				name: 'Priyanka Jha',
+			},
 			children: [{
 				name: 'Child 1',
 				children: []

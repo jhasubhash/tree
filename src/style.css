@@ -37,6 +37,12 @@ path.activelink {
 	stroke-width: 2.5px;
 }
 
+.partnerLink {
+	fill: none;
+	stroke: #2593B8;
+	stroke-width: 1.5px;
+}
+
 body {
 	background-color: #242424;
 	overflow: hidden;

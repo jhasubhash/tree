@@ -13,6 +13,12 @@ const propTypes = {
 };
 
 export default class TreeContainer extends React.PureComponent {
+	constructor(props){
+		super(props);
+		this.data = props.data;
+		// this.parsePartner(this.data);
+	}
+
 	handleClick(event, node) {
 		setActiveNode(node);
 	}
@@ -38,13 +44,13 @@ export default class TreeContainer extends React.PureComponent {
 
 	getParent(node) {
 		if(node.parent){
-			let parent = this.getRoot(this.props.data, node.parent);
-			let idx = 0;
+			let parent = this.getRoot(this.data, node.parent);
+			/*let idx = 0;
 			let mid = Math.floor(parent.children.length/2);
 			for(; idx< parent.children.length; idx++)
 				if(parent.children[idx].id === node.id) break;
 			if(!(!(parent.children.length%2) && idx === mid-1))
-			[parent.children[idx],parent.children[mid]] = [parent.children[mid],parent.children[idx]];
+			[parent.children[idx],parent.children[mid]] = [parent.children[mid],parent.children[idx]];*/
 			return parent;
 		}
 		return node;
@@ -82,9 +88,36 @@ export default class TreeContainer extends React.PureComponent {
 			: 'node searchIncluded';
 	}
 
+	computePath(){
+		return 'M';
+	}
+	parsePartner(node){
+		//node.textProps= {x: 0, y: 0, transform:"rotate(90)"};
+		if(node.partner){
+			node.name += "\n "+node.partner.name;
+		  //let partner = node.partner;
+		  // partner.pathProps = {className: 'partnerLink'};//{onFocus: this.pathCB};
+		  // partner.pathFunc = this.computePath;
+		  //partner.children = [];
+		  // partner.svgProps = {x:0, y:0};
+		  //node.children.push(partner);
+		}
+		if(node.children && node.children.length){
+		  for(let i=0; i<node.children.length; i++){
+			this.parsePartner(node.children[i]);
+		  }
+		}
+	}
+
+	pathCB = (event, sourceNodeId, targetNodeId)=>{
+		console.log(event);
+		console.log(sourceNodeId);
+		console.log(targetNodeId);
+	}
+
 	render() {
-		let root = this.props.activeNode ? this.getRoot(this.props.data, this.props.activeNode) : this.props.data;
-		this.setActiveStyle(root);
+		let root = this.props.activeNode ? this.getRoot(this.data, this.props.activeNode) : this.data;
+		// this.setActiveStyle(root);
 		root = this.getParent(root);
 		root = clone(root);
 
@@ -98,8 +131,8 @@ export default class TreeContainer extends React.PureComponent {
 			<Tree
 				animated
 				data={root}
-				height={this.props.height}
 				width={this.props.width}
+				height={this.props.height}
 				keyProp={"id"}
 				gProps={{
 					className: 'node',
