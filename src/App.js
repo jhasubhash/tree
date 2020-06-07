@@ -121,7 +121,6 @@ class App extends React.PureComponent {
   }
   
   startDrag = (event) => {
-    event.preventDefault();
     this.enableDrag = true;
     this.lastPos = {x:window.event.clientX, y:window.event.clientY};
   }
