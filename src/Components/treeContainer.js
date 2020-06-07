@@ -2,7 +2,7 @@ import clone from 'clone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
-import { setActiveNode } from '../Reducers/actions';
+import { setActiveNode, resetView } from '../Reducers/actions';
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -21,6 +21,8 @@ export default class TreeContainer extends React.PureComponent {
 
 	handleClick(event, node) {
 		setActiveNode(node);
+		resetView();
+		window.resetGlobal();
 	}
 
 	getRoot(json, nodeId) {
@@ -137,6 +139,10 @@ export default class TreeContainer extends React.PureComponent {
 				gProps={{
 					className: 'node',
 					onClick: this.handleClick
+				}}
+				svgProps={{
+					transform: "scale(1)",
+					viewBox: this.props.panX+" "+this.props.panY+" "+this.props.zoomX+" "+this.props.zoomY
 				}}
 				steps={30}/>);
 	}

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from './filter';
-import { setActiveNode, setFilter, resize } from '../Reducers/actions';
+import { setActiveNode, setFilter, resize, resetView } from '../Reducers/actions';
 
 const propTypes = {
 	filter: PropTypes.string.isRequired,
@@ -16,6 +16,8 @@ export default class Header extends React.PureComponent {
 	handleClick() {
 		setActiveNode(null);
 		setFilter('');
+		resetView();
+		window.resetGlobal();
 	}
 
 	render() {
