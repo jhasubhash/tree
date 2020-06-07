@@ -82,6 +82,9 @@ class App extends React.PureComponent {
     window.addEventListener('mousedown', this.startDrag, { passive: false });
     window.addEventListener('mousemove', this.handleDrag, { passive: false });
     window.addEventListener('mouseup', this.stopDrag, { passive: false });
+    window.addEventListener('touchstart', this.touchStartHandler, { passive: false });
+    window.addEventListener('touchmove', this.touchMoveHandler, { passive: false });
+    window.addEventListener('touchend', this.touchEndHandler, { passive: false });
   }
 
   componentWillUnmount() {
@@ -89,6 +92,9 @@ class App extends React.PureComponent {
     window.removeEventListener('mousedown', this.startDrag, { passive: false });
     window.removeEventListener('mousemove', this.handleDrag, { passive: false });
     window.removeEventListener('mouseup', this.stopDrag, { passive: false });
+    window.removeEventListener('touchstart', this.touchStartHandler, { passive: false });
+    window.removeEventListener('touchmove', this.touchMoveHandler, { passive: false });
+    window.removeEventListener('touchend', this.touchEndHandler, { passive: false });
   }
 
   componentWillReceiveProps(nProps){
@@ -96,6 +102,23 @@ class App extends React.PureComponent {
       zoom(nProps.width/scale, nProps.height/scale, scale);
   }
 
+  touchStartHandler = (event) =>{
+    this.enableDrag = true;
+    this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+  }
+
+  touchMoveHandler = (event) =>{
+    if(!this.enableDrag)return;
+    vx += this.lastPos.x - event.touches[0].clientX ;
+    vy += this.lastPos.y - event.touches[0].clientY;
+    this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+    pan(vx, vy);
+  }
+
+  touchEndHandler = (event) =>{
+    this.enableDrag = false;
+  }
+  
   startDrag = (event) => {
     this.enableDrag = true;
     this.lastPos = {x:window.event.clientX, y:window.event.clientY};
