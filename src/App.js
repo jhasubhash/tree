@@ -44,6 +44,8 @@ class App extends React.PureComponent {
     this.json = this.addIdToNode(json);
     this.addParent(this.json);
     this.addIdToPartner(this.json);
+    this.enableDrag = false;
+    this.lastPos = {x:0,y:0};
   }
 
   addIdToPartner(node){
@@ -78,16 +80,40 @@ class App extends React.PureComponent {
   componentDidMount() {
     // window.addEventListener('scroll', this.handleScroll, { passive: false });
     window.addEventListener('wheel', this.handleWheel, { passive: false });
+    window.addEventListener('mousedown', this.startDrag, { passive: false });
+    window.addEventListener('mousemove', this.handleDrag, { passive: false });
+    window.addEventListener('mouseup', this.stopDrag, { passive: false });
+   // window.addEventListener("drag", this.dragHandler, { passive: false });
   }
 
   componentWillUnmount() {
    // window.removeEventListener('scroll', this.handleScroll, { passive: false });
-    window.addEventListener('wheel', this.handleWheel, { passive: false });
+    window.removeEventListener('wheel', this.handleWheel, { passive: false });
+    window.removeEventListener('mousedown', this.startDrag, { passive: false });
+    window.removeEventListener('mousemove', this.handleDrag, { passive: false });
+    window.removeEventListener('mouseup', this.stopDrag, { passive: false });
+    //window.removeEventListener("drag", this.dragHandler, { passive: false });
   }
 
   componentWillReceiveProps(nProps){
     if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
       zoom(nProps.width/scale, nProps.height/scale, scale);
+  }
+
+  startDrag = (event) => {
+    this.enableDrag = true;
+    this.lastPos = {x:window.event.clientX, y:window.event.clientY};
+  }
+  stopDrag = (event) => {
+    this.enableDrag = false;
+  }
+
+  handleDrag = (event) => {
+    if(!this.enableDrag)return;
+    vx += this.lastPos.x - window.event.clientX ;
+    vy += this.lastPos.y - window.event.clientY;
+    this.lastPos = {x:window.event.clientX, y:window.event.clientY};
+    pan(vx, vy);
   }
 
   handleWheel = (event) => {
@@ -103,6 +129,7 @@ class App extends React.PureComponent {
       vy += event.deltaY;///scale;
       pan(vx, vy);
     }
+    event.stopPropagation()
   }
   
 	render() {
