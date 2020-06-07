@@ -103,11 +103,13 @@ class App extends React.PureComponent {
   }
 
   touchStartHandler = (event) =>{
+    event.preventDefault();
     this.enableDrag = true;
     this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
   }
 
   touchMoveHandler = (event) =>{
+    event.preventDefault();
     if(!this.enableDrag)return;
     vx += this.lastPos.x - event.touches[0].clientX ;
     vy += this.lastPos.y - event.touches[0].clientY;
@@ -120,6 +122,7 @@ class App extends React.PureComponent {
   }
   
   startDrag = (event) => {
+    event.preventDefault();
     this.enableDrag = true;
     this.lastPos = {x:window.event.clientX, y:window.event.clientY};
   }
@@ -128,6 +131,7 @@ class App extends React.PureComponent {
   }
 
   handleDrag = (event) => {
+    event.preventDefault();
     if(!this.enableDrag)return;
     vx += this.lastPos.x - window.event.clientX ;
     vy += this.lastPos.y - window.event.clientY;
