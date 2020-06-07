@@ -136,6 +136,7 @@ export default class TreeContainer extends React.PureComponent {
 				width={this.props.width}
 				height={this.props.height}
 				keyProp={"id"}
+				margins={{bottom : 10, left : 20, right : 100, top : 10}}
 				gProps={{
 					className: 'node',
 					onClick: this.handleClick
