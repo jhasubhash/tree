@@ -103,7 +103,6 @@ class App extends React.PureComponent {
   }
 
   touchStartHandler = (event) =>{
-    event.preventDefault();
     this.enableDrag = true;
     this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
   }
