@@ -86,20 +86,19 @@ class App extends React.PureComponent {
   }
 
   componentWillReceiveProps(nProps){
-    if(this.props.height !== nProps.height ||this.props.width !== nProps.width);
-      zoom(this.props.width/scale, this.props.height/scale, scale);
-}
+    if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
+      zoom(nProps.width/scale, nProps.height/scale, scale);
+  }
 
   handleWheel = (event) => {
     event.preventDefault();
-    console.log("mosue wheel");
     if (event.ctrlKey) {
       scale += event.deltaY * -0.01;
       // Restrict scale
       scale = Math.min(Math.max(.125, scale), 4);
       zoom(this.props.width/scale, this.props.height/scale, scale);
     }else{
-      console.log(event.deltaX+" "+event.deltaY)
+      // console.log(event.deltaX+" "+event.deltaY)
       vx += event.deltaX;///scale;
       vy += event.deltaY;///scale;
       pan(vx, vy);

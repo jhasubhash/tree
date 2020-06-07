@@ -141,7 +141,6 @@ export default class TreeContainer extends React.PureComponent {
 					onClick: this.handleClick
 				}}
 				svgProps={{
-					transform: "scale(1)",
 					viewBox: this.props.panX+" "+this.props.panY+" "+this.props.zoomX+" "+this.props.zoomY
 				}}
 				steps={30}/>);
