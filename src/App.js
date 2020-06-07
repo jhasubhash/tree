@@ -69,7 +69,7 @@ class App extends React.PureComponent {
 
   addIdToNode(root){
 		if(!root) return root;
-		root.id = (this.id++).toString();
+    root.id = (this.id++).toString();
 		if(root.children && root.children.length > 0)
 			for (let i = 0; i < root.children.length; i++) {
 				this.addIdToNode(root.children[i]);
@@ -78,21 +78,17 @@ class App extends React.PureComponent {
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll, { passive: false });
     window.addEventListener('wheel', this.handleWheel, { passive: false });
     window.addEventListener('mousedown', this.startDrag, { passive: false });
     window.addEventListener('mousemove', this.handleDrag, { passive: false });
     window.addEventListener('mouseup', this.stopDrag, { passive: false });
-   // window.addEventListener("drag", this.dragHandler, { passive: false });
   }
 
   componentWillUnmount() {
-   // window.removeEventListener('scroll', this.handleScroll, { passive: false });
     window.removeEventListener('wheel', this.handleWheel, { passive: false });
     window.removeEventListener('mousedown', this.startDrag, { passive: false });
     window.removeEventListener('mousemove', this.handleDrag, { passive: false });
     window.removeEventListener('mouseup', this.stopDrag, { passive: false });
-    //window.removeEventListener("drag", this.dragHandler, { passive: false });
   }
 
   componentWillReceiveProps(nProps){

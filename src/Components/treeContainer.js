@@ -16,13 +16,26 @@ export default class TreeContainer extends React.PureComponent {
 	constructor(props){
 		super(props);
 		this.data = props.data;
-		// this.parsePartner(this.data);
+		this.state = {
+			key:0,
+			currentNode:undefined
+		}
+		this.closeNode = new Set();
+		this.hiddenNode = new Set();
+		this.populateCloseSet(this.data);
 	}
 
-	handleClick(event, node) {
-		setActiveNode(node);
-		resetView();
-		window.resetGlobal();
+	populateCloseSet(node){
+		this.closeNode.add(node.id);
+		if(node.children)
+		for(let i=0; i< node.children.length; i++)
+		this.populateCloseSet(node.children[i]);
+	}
+
+	handleClick = (event, node) => {
+		this.setState({ currentNode: node });
+		// resetView();
+		// window.resetGlobal();
 	}
 
 	getRoot(json, nodeId) {
@@ -36,26 +49,6 @@ export default class TreeContainer extends React.PureComponent {
 			}
 		}
 		return false;
-	}
-
-	setActiveStyle(node){
-		/*resetStyle(this.lastActiveNode);
-		node.pathProps = {className: 'activelink'};
-		node.textProps = */
-	}
-
-	getParent(node) {
-		if(node.parent){
-			let parent = this.getRoot(this.data, node.parent);
-			/*let idx = 0;
-			let mid = Math.floor(parent.children.length/2);
-			for(; idx< parent.children.length; idx++)
-				if(parent.children[idx].id === node.id) break;
-			if(!(!(parent.children.length%2) && idx === mid-1))
-			[parent.children[idx],parent.children[mid]] = [parent.children[mid],parent.children[idx]];*/
-			return parent;
-		}
-		return node;
 	}
 
 	buildSubTree(root) {
@@ -90,37 +83,37 @@ export default class TreeContainer extends React.PureComponent {
 			: 'node searchIncluded';
 	}
 
-	computePath(){
-		return 'M';
-	}
-	parsePartner(node){
-		//node.textProps= {x: 0, y: 0, transform:"rotate(90)"};
-		if(node.partner){
-			node.name += "\n "+node.partner.name;
-		  //let partner = node.partner;
-		  // partner.pathProps = {className: 'partnerLink'};//{onFocus: this.pathCB};
-		  // partner.pathFunc = this.computePath;
-		  //partner.children = [];
-		  // partner.svgProps = {x:0, y:0};
-		  //node.children.push(partner);
-		}
-		if(node.children && node.children.length){
-		  for(let i=0; i<node.children.length; i++){
-			this.parsePartner(node.children[i]);
-		  }
-		}
-	}
-
 	pathCB = (event, sourceNodeId, targetNodeId)=>{
 		console.log(event);
 		console.log(sourceNodeId);
 		console.log(targetNodeId);
 	}
 
+	getChildren = (node) => {
+		let children = undefined;
+		if(!node.id) return node.children;
+		if(this.props.filter && !this.state.currentNode) 
+			children = node.children;
+		else if(this.state.currentNode === node.id){
+			this.state.currentNode = undefined;
+			if(this.closeNode.has(node.id)){
+				this.closeNode.delete(node.id);
+				children = node.children;
+			} else {
+				this.closeNode.add(node.id);
+				node.children = undefined;
+				children = undefined;
+			}
+		}
+		else if(this.closeNode.has(node.id))
+			children = undefined;
+		else
+			children = node.children;
+		return children;
+	}
+
 	render() {
-		let root = this.props.activeNode ? this.getRoot(this.data, this.props.activeNode) : this.data;
-		// this.setActiveStyle(root);
-		root = this.getParent(root);
+		let root = this.data;
 		root = clone(root);
 
 		if (this.props.filter) {
@@ -136,6 +129,7 @@ export default class TreeContainer extends React.PureComponent {
 				width={this.props.width}
 				height={this.props.height}
 				keyProp={"id"}
+				getChildren={this.getChildren}
 				margins={{bottom : 10, left : 20, right : 100, top : 10}}
 				gProps={{
 					className: 'node',
