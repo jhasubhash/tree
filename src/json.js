@@ -30,7 +30,7 @@ export default {
 				name: 'Rajat Jha',
 				children: []
 			},{
-				name: 'Child 2',
+				name: 'Aditya Jha',
 				children: []
 			}]
 		}, {
@@ -42,19 +42,19 @@ export default {
 				name: 'Harshit Jha',
 				children: []
 			},{
-				name: 'Child 2',
+				name: 'Kartik Jha',
 				children: []
 			}]
 		}, {
 			name: 'Shailesh Jha',
 			partner: {
-				name: 'Dolly Jha',
+				name: 'Aruna Jha',
 			},
 			children: [{
-				name: 'Child 1',
+				name: 'Yash',
 				children: []
 			},{
-				name: 'Child 2',
+				name: 'Juhi',
 				children: []
 			}]
 		}]
@@ -78,10 +78,10 @@ export default {
 				name: 'Rajesh Pathak',
 			},
 			children: [{
-				name: 'Arya Jha10',
+				name: 'Rashi Pathak',
 				children: []
 			},{
-				name: 'Aastha Jha',
+				name: 'Aastha Pathak',
 				children: []
 			}]
 		}, {
@@ -117,10 +117,10 @@ export default {
 				name: 'Santosh Jha',
 			},
 			children: [{
-				name: 'Child 1',
+				name: 'Karnika Jha',
 				children: []
 			},{
-				name: 'Child 2',
+				name: 'Umang Jha',
 				children: []
 			}]
 		}]
@@ -186,7 +186,7 @@ export default {
 		}, {
 			name: 'Priya Jha',
 			children: [{
-				name: 'Child 1',
+				name: 'Rishi Jha',
 				children: []
 			}]
 		}, {
