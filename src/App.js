@@ -41,7 +41,9 @@ class App extends React.PureComponent {
     this.addParent(this.json);
     this.addIdToPartner(this.json);
     this.enableDrag = false;
+    this.scaling = false;
     this.lastPos = {x:0,y:0};
+    this.lastDis = 0;
   }
 
   addIdToPartner(node){
@@ -81,6 +83,7 @@ class App extends React.PureComponent {
     window.addEventListener('touchstart', this.touchStartHandler, { passive: false });
     window.addEventListener('touchmove', this.touchMoveHandler, { passive: false });
     window.addEventListener('touchend', this.touchEndHandler, { passive: false });
+    window.addEventListener('touchcancel', this.touchEndHandler, { passive: false });
   }
 
   componentWillUnmount() {
@@ -91,6 +94,7 @@ class App extends React.PureComponent {
     window.removeEventListener('touchstart', this.touchStartHandler, { passive: false });
     window.removeEventListener('touchmove', this.touchMoveHandler, { passive: false });
     window.removeEventListener('touchend', this.touchEndHandler, { passive: false });
+    window.removeEventListener('touchcancel', this.touchEndHandler, { passive: false });
   }
 
   componentWillReceiveProps(nProps){
@@ -99,21 +103,40 @@ class App extends React.PureComponent {
   }
 
   touchStartHandler = (event) =>{
-    this.enableDrag = true;
-    this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+    if(event.touches.length === 1){
+      this.enableDrag = true;
+      this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+    } else if(event.touches.length === 2){
+      this.scaling = true;
+      this.lastDis =  Math.hypot(event.touches[0].pageX - event.touches[1].pageX, 
+                      event.touches[0].pageY - event.touches[1].pageY);
+    }
   }
 
   touchMoveHandler = (event) =>{
     event.preventDefault();
-    if(!this.enableDrag)return;
-    vx += this.lastPos.x - event.touches[0].clientX ;
-    vy += this.lastPos.y - event.touches[0].clientY;
-    this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
-    pan(vx, vy);
+    if(event.touches.length === 1){
+      if(!this.enableDrag)return;
+      vx += this.lastPos.x - event.touches[0].clientX ;
+      vy += this.lastPos.y - event.touches[0].clientY;
+      this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+      pan(vx, vy);
+    } else if(event.touches.length === 2){
+      if(!this.scaling)return;
+      let currDis = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, 
+                    event.touches[0].pageY - event.touches[1].pageY);
+      scale += (currDis-this.lastDis) * 0.01;
+      this.lastDis = currDis;
+      scale = Math.min(Math.max(.125, scale), 4);
+      zoom(this.props.width/scale, this.props.height/scale, scale);
+    }
   }
 
   touchEndHandler = (event) =>{
-    this.enableDrag = false;
+    if(event.touches.length === 1)
+      this.enableDrag = false;
+    if(event.touches.length === 2)
+      this.scaling = false;
   }
   
   startDrag = (event) => {
