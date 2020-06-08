@@ -10,11 +10,7 @@ import { resize, zoom, pan } from './Reducers/actions';
 import './style.css';
 
 $(window).on('resize', resize);
-/*
-document.addEventListener('gesturestart', e => e.preventDefault())
-document.addEventListener('gesturechange', e => e.preventDefault())
-document.addEventListener('mousewheel', e => {e.preventDefault(); console.log("mouse wheel")}, false)
-*/
+
 let scale = 1;
 let vx = 0;
 let vy = 0;

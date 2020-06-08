@@ -2,7 +2,7 @@ import clone from 'clone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
-import { setActiveNode, resetView } from '../Reducers/actions';
+import { setFilter, setActiveNode, resetView } from '../Reducers/actions';
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -34,6 +34,7 @@ export default class TreeContainer extends React.PureComponent {
 
 	handleClick = (event, node) => {
 		this.setState({ currentNode: node });
+		setFilter('');
 		// resetView();
 		// window.resetGlobal();
 	}
@@ -52,22 +53,19 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	buildSubTree(root) {
-		let newChildren = [];
-
+		let cnt = 0;
 		for (let i = 0; i < root.children.length; i++) {
-			let child = this.buildSubTree(root.children[i]);
-			if (child) {
-				newChildren.push(child);
+			if (this.buildSubTree(root.children[i])) {
+				cnt++;
 			}
 		}
 
-		if (newChildren.length > 0) {
-			root.children = newChildren;
-		}
-
-		if (newChildren.length > 0 || root.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) !== -1) {
+		if (cnt > 0 || root.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) === 0) {
+			if(this.closeNode.has(root.id))
+				this.closeNode.delete(root.id);
 			return root;
 		}
+		this.closeNode.add(root.id);
 		return null;
 	}
 
@@ -92,9 +90,9 @@ export default class TreeContainer extends React.PureComponent {
 	getChildren = (node) => {
 		let children = undefined;
 		if(!node.id) return node.children;
-		if(this.props.filter && !this.state.currentNode) 
-			children = node.children;
-		else if(this.state.currentNode === node.id){
+		/*if(this.props.filter && !this.state.currentNode) 
+			children = node.children;*/
+		if(this.state.currentNode === node.id){
 			this.state.currentNode = undefined;
 			if(this.closeNode.has(node.id)){
 				this.closeNode.delete(node.id);
@@ -113,6 +111,10 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	render() {
+		if(this.props.activeNode === '0'){
+			setActiveNode(null);
+			this.populateCloseSet(this.data)
+		}
 		let root = this.data;
 		root = clone(root);
 
