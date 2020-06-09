@@ -185,7 +185,8 @@ class App extends React.PureComponent {
           panX={this.props.panX}
           panY={this.props.panY}
           zoomX={this.props.zoomX}
-          zoomY={this.props.zoomY}/>
+          zoomY={this.props.zoomY}
+          editMode={this.props.editMode}/>
 			</div>);
 	}
 }

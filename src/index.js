@@ -1,15 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Store from './Reducers/store';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-	<Provider store={Store}>
-    <App />
-	</Provider>,
+  <Router>
+    <Switch>
+      <Route path="/tree" exact>
+        <Provider store={Store}>
+          <App editMode={false}/>
+        </Provider>
+      </Route>
+      <Route path="/tree/edit">
+        <Provider store={Store}>
+          <App editMode={true}/>
+        </Provider>
+      </Route>
+    </Switch>
+  </Router>,
   document.getElementById('root')
 );
 

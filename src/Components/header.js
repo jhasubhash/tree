@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from './filter';
+import Button from '@material-ui/core/Button';
 import { setActiveNode, setFilter, resize, resetView } from '../Reducers/actions';
 
 const propTypes = {
@@ -24,7 +25,11 @@ export default class Header extends React.PureComponent {
 		return (
 			<div id="header">
 				<Filter filter={this.props.filter}/>
-				<button onClick={this.handleClick}>Reset</button>
+				<Button onClick={this.handleClick} 
+						variant="contained" 
+						color="primary"
+						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
+						size="small" >Reset</Button>
 				{false && <span>Last Updated: {this.props.timestamp}</span>}
 			</div>);
 	}

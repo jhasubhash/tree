@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
 import { setFilter, setActiveNode, resetView } from '../Reducers/actions';
+import Form from './form'
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -18,11 +19,13 @@ export default class TreeContainer extends React.PureComponent {
 		this.data = props.data;
 		this.state = {
 			key:0,
-			currentNode:undefined
+			currentNode:undefined,
+			formActive: false
 		}
 		this.closeNode = new Set();
 		this.hiddenNode = new Set();
-		this.populateCloseSet(this.data);
+		if(!this.props.editMode)
+			this.populateCloseSet(this.data);
 	}
 
 	populateCloseSet(node){
@@ -32,11 +35,27 @@ export default class TreeContainer extends React.PureComponent {
 		this.populateCloseSet(node.children[i]);
 	}
 
+	resetCloseSet(node){
+		if(this.closeNode.has(node.id))
+		this.closeNode.delete(node.id);
+		if(node.children)
+		for(let i=0; i< node.children.length; i++)
+		this.resetCloseSet(node.children[i]);
+	}
+
 	handleClick = (event, node) => {
 		this.setState({ currentNode: node });
-		setFilter('');
+		if(!this.props.editMode){
+			setFilter('');
+		}else{
+			this.setState({ formActive: true });
+		}
 		// resetView();
 		// window.resetGlobal();
+	}
+
+	formClose = (data) => {
+		this.setState({ formActive: false })
 	}
 
 	getRoot(json, nodeId) {
@@ -92,7 +111,7 @@ export default class TreeContainer extends React.PureComponent {
 		if(!node.id) return node.children;
 		/*if(this.props.filter && !this.state.currentNode) 
 			children = node.children;*/
-		if(this.state.currentNode === node.id){
+		if(this.state.currentNode === node.id && !this.props.editMode){
 			this.state.currentNode = undefined;
 			if(this.closeNode.has(node.id)){
 				this.closeNode.delete(node.id);
@@ -113,7 +132,10 @@ export default class TreeContainer extends React.PureComponent {
 	render() {
 		if(this.props.activeNode === '0'){
 			setActiveNode(null);
+			if(!this.props.editMode)
 			this.populateCloseSet(this.data)
+			else
+			this.resetCloseSet(this.data)
 		}
 		let root = this.data;
 		root = clone(root);
@@ -125,6 +147,11 @@ export default class TreeContainer extends React.PureComponent {
 		this.setClassName(root);
 
 		return (
+			<div>
+			{this.state.formActive &&
+			<Form nodeId={this.state.currentNode} 
+					data={this.data}
+					formSubmitCB={this.formClose}/>}
 			<Tree
 				animated
 				data={root}
@@ -140,7 +167,10 @@ export default class TreeContainer extends React.PureComponent {
 				svgProps={{
 					viewBox: this.props.panX+" "+this.props.panY+" "+this.props.zoomX+" "+this.props.zoomY
 				}}
-				steps={30}/>);
+				steps={30}/>
+				</div>
+			);
+				
 	}
 }
 

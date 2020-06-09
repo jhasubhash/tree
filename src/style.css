@@ -47,23 +47,24 @@ body {
 	background-color: #242424;
 	overflow: hidden;
 }
-
+/*
 span {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #F4F4F4;
 	text-shadow: 0 1px 4px black;
 	float: right;
-}
+}*/
 
 input {
 	padding: 5px 12px;
 	border: 0;
-	border-radius: 50px;
 }
-
+/*
 input:focus {
 	outline: none;
-}
+}*/
+
+/*
 
 button {
 	background-image: linear-gradient(to bottom, #337ab7 0%, #265a88 100%);
@@ -83,4 +84,4 @@ button:hover {
 button:focus {
 	outline: none;
 	background-image: linear-gradient(to top, #337ab7 0%, #265a88 100%);
-}
+}*/
