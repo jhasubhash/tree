@@ -175,7 +175,7 @@ class App extends React.PureComponent {
 	render() {
 		return (
 			<div id="container" >
-				<Header filter={this.props.filter} timestamp={json.timestamp}/>
+				<Header filter={this.props.filter}/>
 				<TreeContainer
 					activeNode={this.props.activeNode}
 					data={this.json}

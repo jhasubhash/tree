@@ -30,7 +30,6 @@ export default class Header extends React.PureComponent {
 						color="primary"
 						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
 						size="small" >Reset</Button>
-				{false && <span>Last Updated: {this.props.timestamp}</span>}
 			</div>);
 	}
 }
