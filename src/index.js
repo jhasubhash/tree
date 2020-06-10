@@ -6,16 +6,19 @@ import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+const createHistory = require("history").createBrowserHistory;
+
+const history = createHistory();
 
 ReactDOM.render(
-  <Router>
+  <Router basename={process.env.PUBLIC_URL} history={history}>
     <Switch>
-      <Route path="/tree" exact>
+      <Route path="/" exact>
         <Provider store={Store}>
           <App editMode={false}/>
         </Provider>
       </Route>
-      <Route path="/tree/edit">
+      <Route path="/edit">
         <Provider store={Store}>
           <App editMode={true}/>
         </Provider>
