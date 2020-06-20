@@ -117,17 +117,23 @@ class App extends React.PureComponent {
     event.preventDefault();
     if(event.touches.length === 1){
       if(!this.enableDrag)return;
-      vx += this.lastPos.x - event.touches[0].clientX ;
-      vy += this.lastPos.y - event.touches[0].clientY;
+      vx += (this.lastPos.x - event.touches[0].clientX)/scale ;
+      vy += (this.lastPos.y - event.touches[0].clientY)/scale;
       this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
       pan(vx, vy);
     } else if(event.touches.length === 2){
       if(!this.scaling)return;
       let currDis = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, 
                     event.touches[0].pageY - event.touches[1].pageY);
+      let oldScale = scale;
       scale += (currDis-this.lastDis) * 0.01;
       this.lastDis = currDis;
       scale = Math.min(Math.max(.125, scale), 4);
+      let x1 = (event.touches[0].clientX+event.touches[1].clientX)/2;
+      let y1 = (event.touches[0].clientY+event.touches[1].clientY)/2;
+      vx = (vx - x1) *oldScale/scale + x1;
+      vy = (vy - y1) *oldScale/scale + y1;
+      pan(vx, vy);
       zoom(this.props.width/scale, this.props.height/scale, scale);
     }
   }
@@ -150,8 +156,8 @@ class App extends React.PureComponent {
   handleDrag = (event) => {
     event.preventDefault();
     if(!this.enableDrag)return;
-    vx += this.lastPos.x - window.event.clientX ;
-    vy += this.lastPos.y - window.event.clientY;
+    vx += (this.lastPos.x - window.event.clientX)/scale ;
+    vy += (this.lastPos.y - window.event.clientY)/scale;
     this.lastPos = {x:window.event.clientX, y:window.event.clientY};
     pan(vx, vy);
   }
@@ -159,14 +165,17 @@ class App extends React.PureComponent {
   handleWheel = (event) => {
     event.preventDefault();
     if (event.ctrlKey) {
+      let oldScale = scale;
       scale += event.deltaY * -0.01;
       // Restrict scale
       scale = Math.min(Math.max(.125, scale), 4);
+      vx = (vx - event.clientX) *oldScale/scale + event.clientX;
+      vy = (vy - event.clientY) *oldScale/scale + event.clientY;
+      pan(vx, vy);
       zoom(this.props.width/scale, this.props.height/scale, scale);
     }else{
-      // console.log(event.deltaX+" "+event.deltaY)
-      vx += event.deltaX;///scale;
-      vy += event.deltaY;///scale;
+      vx += event.deltaX/scale;
+      vy += event.deltaY/scale;
       pan(vx, vy);
     }
     event.stopPropagation()
