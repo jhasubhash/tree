@@ -9,6 +9,7 @@ import { resize } from './Reducers/actions';
 import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
 import { select, event, selectAll } from 'd3-selection'
 import './style.css';
+import './App.css';
 
 $(window).on('resize', resize);
 
@@ -102,7 +103,9 @@ class App extends React.PureComponent {
 	render() {
 		return (
 			<div id="container" >
-				<Header filter={this.props.filter} resetView={this.reset}/>
+        <Header filter={this.props.filter} 
+          resetView={this.reset}
+          editMode={this.props.editMode}/>
 				<TreeContainer
 					activeNode={this.props.activeNode}
 					data={this.json}

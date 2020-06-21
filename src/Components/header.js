@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from './filter';
+import ThemeSwitch from './themeSwitch'
 import Button from '@material-ui/core/Button';
 import { setActiveNode, setFilter, resize } from '../Reducers/actions';
 
@@ -30,6 +31,12 @@ export default class Header extends React.PureComponent {
 						color="primary"
 						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
 						size="small" >Reset</Button>
+				{this.props.editMode && <Button onClick={this.handleSave} 
+						variant="contained" 
+						color="primary"
+						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px', float: 'right' }}
+						size="small" >Save</Button>}
+				{!this.props.editMode && <div style={{float: 'right'}}><ThemeSwitch/></div>}
 			</div>);
 	}
 }
