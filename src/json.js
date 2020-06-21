@@ -57,10 +57,46 @@ export default {
 			name: 'Dheernath Jha',
 			children:[{
 				name: 'Raghuvar Jha',
-				children:[]
+				children:[{
+					name: 'Govardhan Jha',
+					children:[{
+						name: 'Satyadev Jha',
+						children:[{
+							name: 'Kalikant Jha',
+							children:[{
+								name: 'Raman Jee Jha',
+								children:[]
+							},{
+								name: 'Gagan Jee Jha',
+								children:[]
+							}]
+						}]
+					},{
+						name: 'Musri Jha',
+						children:[{
+							name: 'Upendra Jha',
+							children:[]
+						},{
+							name: 'Devendra Jha',
+							children:[{
+								name: 'Bhagirath Jha',
+								children:[{
+									name: 'Rakesh Jha',
+									children:[]
+								},{
+									name: 'Mukesh Jha',
+									children:[]
+								}]
+							}]
+						}]
+					}]
+				}]
 			},{
 				name: 'Gopinath Jha',
-				children:[]
+				children:[{
+					name: 'Ratti Jha',
+					children:[]
+				}]
 			},{
 				name: 'Nenmani Jha',
 				children:[{
@@ -522,10 +558,106 @@ export default {
 				}]
 			},{
 				name: 'Kulmani Jha',
-				children:[]
+				children:[{
+					name: 'Jogeshwar Jha',
+					children:[]
+				},{
+					name: 'Kedarnath Jha',
+					children:[{
+						name: 'Sureshwar Jha',
+						children:[{
+							name: 'Khela Nand Jha',
+							children:[{
+								name: 'Viveka Nand Jha',
+								children:[]
+							}]
+						}]
+					},{
+						name: 'Nageshwar Jha',
+						children:[{
+							name: 'Durganand Jha',
+							children:[{
+								name: 'Ramanand Jha',
+								children:[]
+							},{
+								name: 'Kripanand Jha',
+								children:[]
+							}]
+						},{
+							name: 'Indranand Jha',
+							children:[{
+								name: 'Chandranand Jha',
+								children:[{
+									name: 'Pankaj Jha',
+									children:[]
+								}]
+							},{
+								name: 'Radhanand Jha',
+								children:[]
+							},{
+								name: 'Ganganand Jha',
+								children:[]
+							}]
+						},{
+							name: 'Meghanand Jha',
+							children:[{
+								name: 'Sitanand Jha',
+								children:[]
+							},{
+								name: 'Rudranand Jha',
+								children:[]
+							}]
+						}]
+					}]
+				}]
 			},{
 				name: 'Rudramani Jha',
-				children:[]
+				children:[{
+					name: 'Varje Jha',
+					children:[{
+						name: 'Kapaleshwar Jha',
+						children:[]
+					}]
+				},{
+					name: 'Apooch Jha',
+					children:[{
+						name: 'Sahdev Jha',
+						children:[{
+							name: 'Kari Jha',
+							children:[{
+								name: 'Sashikant Jha',
+								children:[{
+									name: 'Pradip Jha',
+									children:[]
+								},{
+									name: 'Ajit Jha',
+									children:[]
+								},{
+									name: 'Sujit Jha',
+									children:[]
+								}]
+							},{
+								name: 'Indrakant Jha',
+								children:[]
+							},{
+								name: 'Jeevkant Jha',
+								children:[]
+							}]
+						},{
+							name: 'Buddhinath Jha',
+							children:[{
+								name: 'Raj Kuamr Jha',
+								children:[]
+							},{
+								name: 'Phool Kumar Jha',
+								children:[]
+							},{
+								name: 'Pawan Kumar Jha',
+								children:[]
+							}]
+						}]
+					}]
+				}]
 			}]
 		},{
 			name: 'Dullah Jha',
