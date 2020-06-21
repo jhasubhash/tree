@@ -18,7 +18,6 @@ export default class Header extends React.PureComponent {
 		setActiveNode('0');
 		setFilter('');
 		resetView();
-		window.resetGlobal();
 	}
 
 	render() {

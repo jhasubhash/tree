@@ -5,31 +5,12 @@ export const ActionType = {
 	SET_ACTIVE_NODE: 'SET_ACTIVE_NODE',
 	SET_DATA: 'SET_DATA',
 	SET_FILTER: 'SET_FILTER',
-	ZOOM: 'ZOOM',
-	PAN: 'PAN',
 	RESET_VIEW: 'RESET_VIEW'
 };
 
 export function resize() {
 	Store.dispatch({
 		type: ActionType.RESIZE
-	});
-}
-
-export function zoom(x, y, scale) {
-	Store.dispatch({
-		type: ActionType.ZOOM,
-		zoomX: x,
-		zoomY: y,
-		scale: scale
-	});
-}
-
-export function pan(x, y) {
-	Store.dispatch({
-		type: ActionType.PAN,
-		panX: x,
-		panY: y
 	});
 }
 

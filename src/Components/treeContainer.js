@@ -2,7 +2,7 @@ import clone from 'clone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
-import { setFilter, setActiveNode, resetView } from '../Reducers/actions';
+import { setFilter, setActiveNode } from '../Reducers/actions';
 import Form from './form'
 
 const propTypes = {
@@ -50,8 +50,6 @@ export default class TreeContainer extends React.PureComponent {
 		}else{
 			this.setState({ formActive: true });
 		}
-		// resetView();
-		// window.resetGlobal();
 	}
 
 	formClose = (data) => {
@@ -162,10 +160,10 @@ export default class TreeContainer extends React.PureComponent {
 				margins={{bottom : 10, left : 20, right : 100, top : 10}}
 				gProps={{
 					className: 'node',
-					onClick: this.handleClick
+					onClick: this.handleClick,
 				}}
 				svgProps={{
-					viewBox: this.props.panX+" "+this.props.panY+" "+this.props.zoomX+" "+this.props.zoomY
+					viewBox: 0+" "+0+" "+this.props.width+" "+this.props.height
 				}}
 				steps={30}/>
 				</div>

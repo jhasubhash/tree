@@ -5,31 +5,18 @@ import Header from './Components/header';
 import TreeContainer from './Components/treeContainer';
 import json from './json';
 import { connect } from 'react-redux';
-import { resize, zoom, pan } from './Reducers/actions';
-
+import { resize } from './Reducers/actions';
+import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
+import { select, event, selectAll } from 'd3-selection'
 import './style.css';
 
 $(window).on('resize', resize);
-
-let scale = 1;
-let vx = 0;
-let vy = 0;
-
-window.resetGlobal = function(){
-  scale = 1;
-  vx = 0;
-  vy = 0;
-};
 
 const propTypes = {
 	activeNode: PropTypes.string,
 	filter: PropTypes.string.isRequired,
 	height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
-  panX: PropTypes.number.isRequired,
-  panY: PropTypes.number.isRequired,
-  zoomX: PropTypes.number.isRequired,
-  zoomY: PropTypes.number.isRequired
 };
 
 class App extends React.PureComponent {
@@ -40,10 +27,6 @@ class App extends React.PureComponent {
     this.json = this.addIdToNode(json);
     this.addParent(this.json);
     this.addIdToPartner(this.json);
-    this.enableDrag = false;
-    this.scaling = false;
-    this.lastPos = {x:0,y:0};
-    this.lastDis = 0;
   }
 
   addIdToPartner(node){
@@ -75,110 +58,40 @@ class App extends React.PureComponent {
 		return root;
   }
 
+
+  zoomed = () => {
+    selectAll('g').filter(function() {
+      return !this.classList.contains('node')
+    }).attr("transform", event.transform);
+  }
+
+  wheeled = () => {
+    event.preventDefault();
+    selectAll('g').filter(function() {
+      return !this.classList.contains('node')
+    }).each(function(){
+      /*let current_transform = zoomTransform(this);
+      if (event.ctrlKey) {
+          current_transform.k = current_transform.k - event.deltaY * 0.01;
+      } else {
+          current_transform.y = current_transform.y - event.deltaY;
+      }*/
+      this.setAttribute("transform", event.transform)
+    });
+  }
+
   componentDidMount() {
-    window.addEventListener('wheel', this.handleWheel, { passive: false });
-    window.addEventListener('mousedown', this.startDrag, { passive: false });
-    window.addEventListener('mousemove', this.handleDrag, { passive: false });
-    window.addEventListener('mouseup', this.stopDrag, { passive: false });
-    window.addEventListener('touchstart', this.touchStartHandler, { passive: false });
-    window.addEventListener('touchmove', this.touchMoveHandler, { passive: false });
-    window.addEventListener('touchend', this.touchEndHandler, { passive: false });
-    window.addEventListener('touchcancel', this.touchEndHandler, { passive: false });
+   select('svg').call(zoom()
+    .on("zoom", this.zoomed))
+    //.on("wheel.zoom", this.wheeled);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('wheel', this.handleWheel, { passive: false });
-    window.removeEventListener('mousedown', this.startDrag, { passive: false });
-    window.removeEventListener('mousemove', this.handleDrag, { passive: false });
-    window.removeEventListener('mouseup', this.stopDrag, { passive: false });
-    window.removeEventListener('touchstart', this.touchStartHandler, { passive: false });
-    window.removeEventListener('touchmove', this.touchMoveHandler, { passive: false });
-    window.removeEventListener('touchend', this.touchEndHandler, { passive: false });
-    window.removeEventListener('touchcancel', this.touchEndHandler, { passive: false });
   }
 
   componentWillReceiveProps(nProps){
-    if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
-      zoom(nProps.width/scale, nProps.height/scale, scale);
-  }
-
-  touchStartHandler = (event) =>{
-    if(event.touches.length === 1){
-      this.enableDrag = true;
-      this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
-    } else if(event.touches.length === 2){
-      this.scaling = true;
-      this.lastDis =  Math.hypot(event.touches[0].pageX - event.touches[1].pageX, 
-                      event.touches[0].pageY - event.touches[1].pageY);
-    }
-  }
-
-  touchMoveHandler = (event) =>{
-    event.preventDefault();
-    if(event.touches.length === 1){
-      if(!this.enableDrag)return;
-      vx += (this.lastPos.x - event.touches[0].clientX)/scale ;
-      vy += (this.lastPos.y - event.touches[0].clientY)/scale;
-      this.lastPos = {x:event.touches[0].clientX, y:event.touches[0].clientY};
-      pan(vx, vy);
-    } else if(event.touches.length === 2){
-      if(!this.scaling)return;
-      let currDis = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, 
-                    event.touches[0].pageY - event.touches[1].pageY);
-      let oldScale = scale;
-      scale += (currDis-this.lastDis) * 0.01;
-      this.lastDis = currDis;
-      scale = Math.min(Math.max(.125, scale), 4);
-      let x1 = (event.touches[0].clientX+event.touches[1].clientX)/2;
-      let y1 = (event.touches[0].clientY+event.touches[1].clientY)/2;
-      vx = (vx - x1) *oldScale/scale + x1;
-      vy = (vy - y1) *oldScale/scale + y1;
-      pan(vx, vy);
-      zoom(this.props.width/scale, this.props.height/scale, scale);
-    }
-  }
-
-  touchEndHandler = (event) =>{
-    if(event.touches.length === 1)
-      this.enableDrag = false;
-    if(event.touches.length === 2)
-      this.scaling = false;
-  }
-  
-  startDrag = (event) => {
-    this.enableDrag = true;
-    this.lastPos = {x:window.event.clientX, y:window.event.clientY};
-  }
-  stopDrag = (event) => {
-    this.enableDrag = false;
-  }
-
-  handleDrag = (event) => {
-    event.preventDefault();
-    if(!this.enableDrag)return;
-    vx += (this.lastPos.x - window.event.clientX)/scale ;
-    vy += (this.lastPos.y - window.event.clientY)/scale;
-    this.lastPos = {x:window.event.clientX, y:window.event.clientY};
-    pan(vx, vy);
-  }
-
-  handleWheel = (event) => {
-    event.preventDefault();
-    if (event.ctrlKey) {
-      let oldScale = scale;
-      scale += event.deltaY * -0.01;
-      // Restrict scale
-      scale = Math.min(Math.max(.125, scale), 4);
-      vx = (vx - event.clientX) *oldScale/scale + event.clientX;
-      vy = (vy - event.clientY) *oldScale/scale + event.clientY;
-      pan(vx, vy);
-      zoom(this.props.width/scale, this.props.height/scale, scale);
-    }else{
-      vx += event.deltaX/scale;
-      vy += event.deltaY/scale;
-      pan(vx, vy);
-    }
-    event.stopPropagation()
+    //if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
+    //  zoom(nProps.width/scale, nProps.height/scale, scale);
   }
   
 	render() {
@@ -191,10 +104,6 @@ class App extends React.PureComponent {
 					filter={this.props.filter}
 					height={this.props.height}
 					width={this.props.width}
-          panX={this.props.panX}
-          panY={this.props.panY}
-          zoomX={this.props.zoomX}
-          zoomY={this.props.zoomY}
           editMode={this.props.editMode}/>
 			</div>);
 	}

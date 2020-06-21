@@ -9,8 +9,6 @@ export default function(state, action) {
 		switch (action.type) {
 			case ActionType.RESIZE:
 				return $(window).width();
-			/*case ActionType.ZOOM:
-				return ($(window).width())*action.scale;*/
 			case ActionType.RESET_VIEW:
 				return $(window).width();
 		}
