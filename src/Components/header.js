@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from './filter';
 import Button from '@material-ui/core/Button';
-import { setActiveNode, setFilter, resize, resetView } from '../Reducers/actions';
+import { setActiveNode, setFilter, resize } from '../Reducers/actions';
 
 const propTypes = {
 	filter: PropTypes.string.isRequired,
+	resetView: PropTypes.func,
 	timestamp: PropTypes.string
 };
 
@@ -14,10 +15,10 @@ export default class Header extends React.PureComponent {
 		resize();
 	}
 
-	handleClick() {
+	handleClick = ()=>{
+		this.props.resetView();
 		setActiveNode('0');
 		setFilter('');
-		resetView();
 	}
 
 	render() {

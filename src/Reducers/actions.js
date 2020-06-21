@@ -4,8 +4,7 @@ export const ActionType = {
 	RESIZE: 'RESIZE',
 	SET_ACTIVE_NODE: 'SET_ACTIVE_NODE',
 	SET_DATA: 'SET_DATA',
-	SET_FILTER: 'SET_FILTER',
-	RESET_VIEW: 'RESET_VIEW'
+	SET_FILTER: 'SET_FILTER'
 };
 
 export function resize() {
@@ -25,11 +24,5 @@ export function setFilter(filter) {
 	Store.dispatch({
 		type: ActionType.SET_FILTER,
 		filter: filter
-	});
-}
-
-export function resetView(){
-	Store.dispatch({
-		type: ActionType.RESET_VIEW
 	});
 }

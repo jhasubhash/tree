@@ -65,6 +65,10 @@ class App extends React.PureComponent {
     }).attr("transform", event.transform);
   }
 
+  reset = () => {
+    select('svg').call(this.zoom.transform, zoomIdentity);
+  }
+
   wheeled = () => {
     event.preventDefault();
     selectAll('g').filter(function() {
@@ -81,9 +85,9 @@ class App extends React.PureComponent {
   }
 
   componentDidMount() {
-   select('svg').call(zoom()
-    .on("zoom", this.zoomed))
-    .on("dblclick.zoom", null)
+    this.zoom = zoom().on("zoom", this.zoomed)
+    select('svg').call(this.zoom)
+      .on("dblclick.zoom", null)
     //.on("wheel.zoom", this.wheeled);
   }
 
@@ -98,7 +102,7 @@ class App extends React.PureComponent {
 	render() {
 		return (
 			<div id="container" >
-				<Header filter={this.props.filter}/>
+				<Header filter={this.props.filter} resetView={this.reset}/>
 				<TreeContainer
 					activeNode={this.props.activeNode}
 					data={this.json}
