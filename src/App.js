@@ -83,6 +83,7 @@ class App extends React.PureComponent {
   componentDidMount() {
    select('svg').call(zoom()
     .on("zoom", this.zoomed))
+    .on("dblclick.zoom", null)
     //.on("wheel.zoom", this.wheeled);
   }
 
