@@ -40,7 +40,12 @@ export default function FormDialog(props) {
       debugger;
       setOpen(false);
       currNode.name = name.value;
+      if(currNode.partner)
       currNode.partner.name = partner.value;
+      else if(partner.value){
+        currNode.partner = {};
+        currNode.partner.name = partner.value;
+      }
       orgNode.name = currNode.name;
       orgNode.partner = currNode.partner;
       orgNode.children = currNode.children;
