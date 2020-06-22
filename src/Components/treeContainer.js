@@ -77,7 +77,8 @@ export default class TreeContainer extends React.PureComponent {
 			}
 		}
 
-		if (cnt > 0 || root.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) === 0) {
+		if (cnt > 0 || root.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) === 0
+		||(root.partner && root.partner.name.toLowerCase().indexOf(this.props.filter.toLowerCase()) === 0)) {
 			if(this.closeNode.has(root.id))
 				this.closeNode.delete(root.id);
 			return root;
