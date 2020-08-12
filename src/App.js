@@ -8,6 +8,11 @@ import { connect } from 'react-redux';
 import { resize } from './Reducers/actions';
 import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
 import { select, event, selectAll } from 'd3-selection'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import blue from '@material-ui/core/colors/blue';
+
 import './style.css';
 import './App.css';
 
@@ -20,6 +25,9 @@ const propTypes = {
   width: PropTypes.number.isRequired,
 };
 
+
+const prefersDarkMode = 1;//useMediaQuery('(prefers-color-scheme: dark)');
+
 class App extends React.PureComponent {
   constructor(props){
     super(props);
@@ -28,6 +36,15 @@ class App extends React.PureComponent {
     this.json = this.addIdToNode(json);
     this.addParent(this.json);
     this.addIdToPartner(this.json);
+    this.state = {
+      editMode : false
+    }
+    this.theme = createMuiTheme({
+      palette: {
+        type: prefersDarkMode ? 'dark' : 'light',
+        primary: blue,
+      },
+    })
   }
 
   addIdToPartner(node){
@@ -99,21 +116,29 @@ class App extends React.PureComponent {
     //if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
     //  zoom(nProps.width/scale, nProps.height/scale, scale);
   }
-  
+
+  setEditMode = (mode)=>{
+    this.reset();
+    this.setState({ editMode: mode });
+  }
+
 	render() {
 		return (
+      <ThemeProvider theme={this.theme}>
 			<div id="container" >
         <Header filter={this.props.filter} 
           resetView={this.reset}
-          editMode={this.props.editMode}/>
+          editMode={this.state.editMode}
+          setEditMode={this.setEditMode}/>
 				<TreeContainer
 					activeNode={this.props.activeNode}
 					data={this.json}
 					filter={this.props.filter}
 					height={this.props.height}
 					width={this.props.width}
-          editMode={this.props.editMode}/>
-			</div>);
+          editMode={this.state.editMode}/>
+			</div>
+    </ThemeProvider>);
 	}
 }
 
