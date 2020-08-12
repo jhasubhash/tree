@@ -21,6 +21,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
+import * as emailjs from 'emailjs-com';
 
 const useStyles = makeStyles({
   list: {
@@ -31,6 +32,8 @@ const useStyles = makeStyles({
   },
 });
 
+emailjs.init("user_DyxpTG6qwaTR7AW1vWs4M");
+
 export default function ListView(props) {
   const classes = useStyles();
   const ref = React.useRef(null);
@@ -39,6 +42,7 @@ export default function ListView(props) {
   const [menu, setMenu] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
   const [feedback, setFeedback] = React.useState(false);
+  const [feedbackFailed, setFeedbackFailed] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
   let feedbackText = React.createRef();
   let editText = React.createRef();
@@ -112,7 +116,27 @@ export default function ListView(props) {
   };
 
   const handleFeedbackSubmit = () => {
-      console.log(feedbackText.value);
+    if(feedbackText.value===""){
+      setFeedbackFailed(true);
+      return;
+    }
+      const templateParams = {
+        from_name: "Family Tree User",
+        to_name: "Subhash",
+        message_html: feedbackText.value
+      };
+      emailjs
+            .send("default_service", "template_rLhbphnf", templateParams)
+            .then(
+              function(response) {
+                console.log("SUCCESS!", response.status, response.text);
+                setFeedback(false);
+              },
+              function(err) {
+                console.error("Your message was not able to be sent");
+                setFeedbackFailed(true);
+              }
+            );
   }
 
   const handleEditSubmit = () => {
@@ -163,6 +187,7 @@ export default function ListView(props) {
           <DialogContentText>
             Please provide your feedback. Also let us know if you want to update any information.
           </DialogContentText>
+          {feedbackFailed && <DialogContentText><span style={{color: 'red'}}>Unable to send the message</span></DialogContentText>}
           <TextField
             autoFocus
             margin="dense"
