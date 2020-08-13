@@ -24,9 +24,11 @@ export default class Header extends React.PureComponent {
 		setActiveNode('0');
 		setFilter('');
 	}
+
 	handleSave = ()=>{
-		console.log("tree is saved");
+		this.props.saveTree();
 	}
+	
 	handleCancel = ()=>{
 		this.props.setEditMode(false);
 	}

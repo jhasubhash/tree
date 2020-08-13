@@ -4,6 +4,8 @@ import React from 'react';
 import Tree from 'react-tree-graph';
 import { setFilter, setActiveNode } from '../Reducers/actions';
 import Form from './form'
+import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
+import { select, event, selectAll } from 'd3-selection'
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -26,6 +28,25 @@ export default class TreeContainer extends React.PureComponent {
 		this.hiddenNode = new Set();
 		if(!this.props.editMode)
 			this.populateCloseSet(this.data);
+	}
+
+	zoomed = () => {
+		selectAll('g').filter(function() {
+		  return !this.classList.contains('node')
+		}).attr("transform", event.transform);
+	}
+
+	componentDidMount(){
+		this.zoom = zoom().on("zoom", this.zoomed)
+		selectAll('svg').filter(function() {
+		  return !this.classList.contains('MuiSvgIcon-root')
+		}).call(this.zoom)
+		  .on("dblclick.zoom", null);
+		this.props.setZoomRef(this.zoom);
+		//disable right click
+		/*document.addEventListener('contextmenu', (e) => {
+		  e.preventDefault();
+		});*/
 	}
 
 	populateCloseSet(node){

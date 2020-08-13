@@ -3,7 +3,7 @@ import React from 'react';
 import $ from 'jquery';
 import Header from './Components/header';
 import TreeContainer from './Components/treeContainer';
-import json from './json';
+import localJson from './json';
 import { connect } from 'react-redux';
 import { resize } from './Reducers/actions';
 import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
@@ -12,6 +12,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import blue from '@material-ui/core/colors/blue';
+
+import DB from './js/Database';
 
 import './style.css';
 import './App.css';
@@ -33,11 +35,9 @@ class App extends React.PureComponent {
     super(props);
     this.id = 0;
     this.treeContainerRef = React.createRef();
-    this.json = this.addIdToNode(json);
-    this.addParent(this.json);
-    this.addIdToPartner(this.json);
     this.state = {
-      editMode : false
+      editMode : false,
+      json : {}
     }
     this.theme = createMuiTheme({
       palette: {
@@ -48,7 +48,8 @@ class App extends React.PureComponent {
   }
 
   addIdToPartner(node){
-    if(node.partner)
+    if(!node.partner)
+      node.partner = {name:""};
     node.partner.id = (this.id++).toString();
     if(node.children && node.children.length){
       for(let i=0; i<node.children.length; i++){
@@ -76,11 +77,8 @@ class App extends React.PureComponent {
 		return root;
   }
 
-
-  zoomed = () => {
-    selectAll('g').filter(function() {
-      return !this.classList.contains('node')
-    }).attr("transform", event.transform);
+  setZoomRef = (zoomRef)=>{
+    this.zoom = zoomRef;
   }
 
   reset = () => {
@@ -96,25 +94,43 @@ class App extends React.PureComponent {
     });
   }
 
+  processTreeData = (jsonData)=>{
+    if(!jsonData || !Object.keys(jsonData).length)
+      jsonData = localJson;
+    jsonData = this.addIdToNode(jsonData);
+    this.addParent(jsonData);
+    this.addIdToPartner(jsonData);
+    this.setState({ json: jsonData });
+  }
+
   componentDidMount() {
-    this.zoom = zoom().on("zoom", this.zoomed)
-    selectAll('svg').filter(function() {
-      return !this.classList.contains('MuiSvgIcon-root')
-    }).call(this.zoom)
-      .on("dblclick.zoom", null)
+    //initialize database
+    DB.initDatabase();
+    DB.getTreeData().then((json)=>{
+      this.processTreeData(json);
+    });
   }
 
   componentWillUnmount() {
   }
 
   componentWillReceiveProps(nProps){
-    //if(this.props.height !== nProps.height ||this.props.width !== nProps.width)
-    //  zoom(nProps.width/scale, nProps.height/scale, scale);
   }
 
   setEditMode = (mode)=>{
     this.reset();
     this.setState({ editMode: mode });
+  }
+
+  saveTree = ()=>{
+    console.log(this.state.json);
+    DB.save(this.state.json).then(()=>{
+      console.log("Tree Data successfully written!");
+      this.setEditMode(false);
+    })
+    .catch(function(error) {
+        console.error("Error writing Tree Data : ", error);
+    });
   }
 
 	render() {
@@ -124,14 +140,16 @@ class App extends React.PureComponent {
         <Header filter={this.props.filter} 
           resetView={this.reset}
           editMode={this.state.editMode}
-          setEditMode={this.setEditMode}/>
-				<TreeContainer
+          setEditMode={this.setEditMode}
+          saveTree={this.saveTree}/>
+				{Object.keys(this.state.json).length && <TreeContainer
 					activeNode={this.props.activeNode}
-					data={this.json}
+					data={this.state.json}
 					filter={this.props.filter}
 					height={this.props.height}
 					width={this.props.width}
-          editMode={this.state.editMode}/>
+          editMode={this.state.editMode}
+          setZoomRef={this.setZoomRef}/>}
 			</div>
     </ThemeProvider>);
 	}

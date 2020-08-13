@@ -44,6 +44,7 @@ export default function ListView(props) {
   const [edit, setEdit] = React.useState(false);
   const [feedback, setFeedback] = React.useState(false);
   const [feedbackFailed, setFeedbackFailed] = React.useState(false);
+  const [invalidPassword, setInvalidPassword] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
   let feedbackText = React.createRef();
   let editText = React.createRef();
@@ -65,7 +66,7 @@ export default function ListView(props) {
         setEdit(open);
       else{
         props.handleSaveTree();
-        props.setEditMode(false);
+        //props.setEditMode(false);
       }
     }
     if(anchor === 'settings')
@@ -111,6 +112,8 @@ export default function ListView(props) {
   )};
 
   const handleClose = () => {
+    setInvalidPassword(false);
+    setFeedbackFailed(false);
     setEdit(false);
     setFeedback(false);
     setSettings(false);
@@ -121,6 +124,7 @@ export default function ListView(props) {
       setFeedbackFailed(true);
       return;
     }
+    setFeedbackFailed(false);
       const templateParams = {
         from_name: "Family Tree User",
         to_name: "Subhash",
@@ -141,12 +145,14 @@ export default function ListView(props) {
   }
 
   const handleEditSubmit = () => {
-    console.log(editText.value);
-    setEdit(false);
-    if(editText.value === 'admin'){
+    if(editText.value === 'admin333'){
+      setInvalidPassword(false);
+      setEdit(false);
 		  setActiveNode('0');
 		  setFilter('');
       props.setEditMode(true);
+    }else{
+      setInvalidPassword(true);
     }
   }
 
@@ -158,6 +164,9 @@ export default function ListView(props) {
           <DialogContentText>
             To add or modify names, please enter the admin passcode.
           </DialogContentText>
+          {invalidPassword && <DialogContentText >
+          <span style={{color: 'red'}}>Wrong Password entered !!!</span>
+          </DialogContentText>}
           <TextField
             autoFocus
             margin="dense"

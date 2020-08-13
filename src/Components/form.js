@@ -36,8 +36,7 @@ export default function FormDialog(props) {
       props.formSubmitCB(null);
   };
 
-  const handleSave = () => {
-      debugger;
+  const handleOk = () => {
       setOpen(false);
       currNode.name = name.value;
       if(currNode.partner)
@@ -114,8 +113,8 @@ export default function FormDialog(props) {
             Add Child
           </Button>
         <DialogActions>
-          <Button variant="contained" onClick={handleSave} color="primary">
-            Save
+          <Button variant="contained" onClick={handleOk} color="primary">
+            Ok
           </Button>
           <Button variant="contained" onClick={handleClose} color="primary">
             Cancel
