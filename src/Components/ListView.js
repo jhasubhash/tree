@@ -23,7 +23,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
 import * as emailjs from 'emailjs-com';
-
+import SettingsDialog from './SettingsDialog';
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -222,26 +222,6 @@ export default function ListView(props) {
     </div>
   )};
 
-  const settingsDialog = () => {
-    return (
-    <div>
-      <DialogTitle id="form-dialog-title">Settings</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Work in Progress....
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
-    </div>
-  )};
-
   const attachListener = () =>{
     const target = ref1.current;
     if (!target || !target.addEventListener) return
@@ -296,9 +276,7 @@ export default function ListView(props) {
         <Dialog open={feedback} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
           {feedbackDialog()}
         </Dialog>
-        <Dialog open={settings} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
-          {settingsDialog()}
-        </Dialog>
+        <SettingsDialog open={settings} onClose={handleDialogClose} aria-labelledby="form-dialog-title"/>
     </React.Fragment>
     </div>
   );
