@@ -171,7 +171,8 @@ export default class TreeContainer extends React.PureComponent {
 			{this.state.formActive &&
 			<Form nodeId={this.state.currentNode} 
 					data={this.data}
-					formSubmitCB={this.formClose}/>}
+					formSubmitCB={this.formClose}
+					getNextPerson={this.props.getNextPerson}/>}
 			<Tree
 				animated
 				data={root}

@@ -77,7 +77,7 @@ export default function FormDialog(props) {
   }
 
   const handleAddChild = () => {
-    activeNode.children.push({name:"Add Name ...",children:[]});
+    activeNode.children.push(props.getNextPerson());
     setCurrNode(activeNode);
   }
 

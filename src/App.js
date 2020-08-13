@@ -77,6 +77,15 @@ class App extends React.PureComponent {
 		return root;
   }
 
+  getNextPerson = ()=>{
+    let nxt = {};
+    nxt.name = "Add Name ...";
+    nxt.id = (this.id++).toString();
+    nxt.children = [];
+    nxt.partner = {name:""};
+    return nxt;
+  }
+
   setZoomRef = (zoomRef)=>{
     this.zoom = zoomRef;
   }
@@ -149,7 +158,8 @@ class App extends React.PureComponent {
 					height={this.props.height}
 					width={this.props.width}
           editMode={this.state.editMode}
-          setZoomRef={this.setZoomRef}/>}
+          setZoomRef={this.setZoomRef}
+          getNextPerson={this.getNextPerson}/>}
 			</div>
     </ThemeProvider>);
 	}
