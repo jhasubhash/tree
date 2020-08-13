@@ -84,7 +84,7 @@ class App extends React.PureComponent {
   }
 
   reset = () => {
-    select('svg').call(this.zoom.transform, zoomIdentity);
+    selectAll('svg').call(this.zoom.transform, zoomIdentity);
   }
 
   wheeled = () => {
@@ -92,21 +92,16 @@ class App extends React.PureComponent {
     selectAll('g').filter(function() {
       return !this.classList.contains('node')
     }).each(function(){
-      /*let current_transform = zoomTransform(this);
-      if (event.ctrlKey) {
-          current_transform.k = current_transform.k - event.deltaY * 0.01;
-      } else {
-          current_transform.y = current_transform.y - event.deltaY;
-      }*/
       this.setAttribute("transform", event.transform)
     });
   }
 
   componentDidMount() {
     this.zoom = zoom().on("zoom", this.zoomed)
-    select('svg').call(this.zoom)
+    selectAll('svg').filter(function() {
+      return !this.classList.contains('MuiSvgIcon-root')
+    }).call(this.zoom)
       .on("dblclick.zoom", null)
-    //.on("wheel.zoom", this.wheeled);
   }
 
   componentWillUnmount() {

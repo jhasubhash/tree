@@ -19,6 +19,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import MenuIcon from '@material-ui/icons/Menu';
 import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
 import * as emailjs from 'emailjs-com';
@@ -275,7 +276,7 @@ export default function ListView(props) {
   return (
     <div ref={ref} className="ListView">
     <React.Fragment key={anchor}>
-        <IconButton onClick={handleMenuOpen(anchor,true,props.pageNum)} size='small' color="primary" >|||</IconButton>
+        <IconButton onClick={handleMenuOpen(anchor,true,props.pageNum)} size='small' color="primary" ><MenuIcon/></IconButton>
         <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
         <Drawer  classes={{ paper: classes.drawer }} anchor={'left'} open={menu} onClose={toggleDrawer(anchor, false)}>
         {list(anchor,ref1)}
