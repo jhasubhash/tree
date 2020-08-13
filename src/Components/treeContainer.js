@@ -157,6 +157,10 @@ export default class TreeContainer extends React.PureComponent {
 			else
 			this.resetCloseSet(this.data)
 		}
+		if(this.props.activeNode === 'all'){
+			setActiveNode(null);
+			this.resetCloseSet(this.data)
+		}
 		let root = this.data;
 		root = clone(root);
 
@@ -182,7 +186,7 @@ export default class TreeContainer extends React.PureComponent {
 				getChildren={this.getChildren}
 				margins={{bottom : 10, left : 20, right : 100, top : 10}}
 				gProps={{
-					className: 'node',
+					className: 'apply-font node',
 					onClick: this.handleClick,
 				}}
 				svgProps={{

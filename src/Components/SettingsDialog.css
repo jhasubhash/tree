@@ -1,0 +1,14 @@
+div[id^="font-picker"] .dropdown-button {
+    background: transparent;
+  }
+
+div[id^="font-picker"] ul{
+    background: #424242;
+  }
+
+div[id^="font-picker"] .dropdown-button:focus {
+    background: transparent;
+}
+div[id^="font-picker"] .dropdown-button:hover {
+    background: transparent;
+}

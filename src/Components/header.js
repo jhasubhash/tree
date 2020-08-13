@@ -8,6 +8,7 @@ import { setActiveNode, setFilter, resize } from '../Reducers/actions';
 import ListView from './ListView';
 import SaveIcon from '@material-ui/icons/Save';
 import CloseIcon from '@material-ui/icons/Close';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 const propTypes = {
 	filter: PropTypes.string.isRequired,
 	resetView: PropTypes.func,
@@ -22,6 +23,12 @@ export default class Header extends React.PureComponent {
 	handleClick = ()=>{
 		this.props.resetView();
 		setActiveNode('0');
+		setFilter('');
+	}
+
+	handleExpand = ()=>{
+		this.props.resetView();
+		setActiveNode('all');
 		setFilter('');
 	}
 
@@ -44,6 +51,12 @@ export default class Header extends React.PureComponent {
 						color="primary"
 						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
 						size="small" >Reset</Button>
+				&nbsp;
+				{!this.props.editMode &&<IconButton onClick={this.handleExpand} 
+						variant="contained" 
+						color="primary"
+						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
+						size="small" ><AcUnitIcon/></IconButton>}
 				{this.props.editMode && <IconButton onClick={this.handleSave} 
 						variant="contained" 
 						color="primary"
