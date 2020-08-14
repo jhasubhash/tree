@@ -42,7 +42,7 @@ export default class Header extends React.PureComponent {
 		return (
 			<div id="header">
 				<div style={{float: 'left', paddingTop: '0%'}}>
-				<ListView editMode={this.props.editMode} setEditMode={this.props.setEditMode} handleSaveTree={this.handleSave}/>
+				<ListView {...this.props} handleSaveTree={this.handleSave}/>
 				</div>
 				<Filter filter={this.props.filter}/>
 				<Button onClick={this.handleClick} 

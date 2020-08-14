@@ -14,8 +14,7 @@ import ThemeSwitch from './themeSwitch'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import ColorPickerView from './ColorPickerView';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import PaletteIcon from '@material-ui/icons/Palette';
+import PreferenceMgr from '../js/PreferenceMgr';
 
 import './SettingsDialog.css';
 import { Hidden } from '@material-ui/core';
@@ -34,14 +33,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SettingsDialog(props) {
   const classes = useStyles();
-  const [activeFontFamily, setActiveFontFamily] = React.useState("Helvetica Neue");
-  const [fontSize, setFontSize] = React.useState(11);
+  const [activeFontFamily, setActiveFontFamily] = React.useState(props.fontFamily);
+  const [fontSize, setFontSize] = React.useState(props.fontSize);
   const [fontColorPalette, setFontColorPalette] = React.useState(false);
   const [linkColorPalette, setLinkColorPalette] = React.useState(false);
+  const [activeTheme, setActiveTheme] = React.useState("dark");
+  const [fontColor, setFontColor] = React.useState(props.fontColor);
+  const [linkColor, setLinkColor] = React.useState(props.linkColor);
+
+  React.useEffect(() => {
+    setFontSize(props.fontSize);
+    setActiveFontFamily(props.fontFamily);
+    setFontColor(props.fontColor);
+    setLinkColor(props.linkColor);
+  },[props]);
 
   const handleClose = () => {
     props.onClose();
   }
+  const handleCancel = () => {
+    PreferenceMgr.setPreferencesFromStore();
+    let preference = PreferenceMgr.getPreferences();
+    setFontSize(preference.fontSize);
+    setActiveFontFamily(preference.fontFamily);
+    setFontColor(preference.fontColor);
+    setLinkColor(preference.linkColor);
+    handleClose();
+  }
+  const handleReset = () => {
+    let preference = PreferenceMgr.getOrgPreferences();
+    setFontSize(preference.fontSize);
+    setActiveFontFamily(preference.fontFamily);
+    setFontColor(preference.fontColor);
+    setLinkColor(preference.linkColor);
+    PreferenceMgr.resetPreferences();
+  }
+
+  const handleSave = () => {
+    PreferenceMgr.savePreferences();
+    handleClose();
+  }
+
   const handleFontColorPalette = () => {
     setFontColorPalette(!fontColorPalette);
   }
@@ -56,19 +88,43 @@ export default function SettingsDialog(props) {
     setLinkColorPalette(false);
   }
 
+  const onThemeChange = (event) => {
+    setActiveTheme(event.target.value);
+  }
+
+  const onFontSizeChange = (event) => {
+    setFontSize(event.target.value);
+    PreferenceMgr.setFontSize(event.target.value);
+  }
+
+  const onFontFamilyChange = (nextFont)=>{
+      setActiveFontFamily(nextFont.family);
+      PreferenceMgr.setFontFamily(nextFont.family);
+  }
+
+  const onFontColorChange = (color)=>{
+    setFontColor(color);
+    PreferenceMgr.setFontColor(color);
+  }
+
+  const onLinkColorChange = (color)=>{
+    setLinkColor(color);
+    PreferenceMgr.setLinkColor(color);
+  }
+
   return (
     <div className={classes.root}>
       <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
         <Dialog open={fontColorPalette} onClose={onFontColorPaletteClose}>
-        <ColorPickerView/>
+        <ColorPickerView color={fontColor} setColor={onFontColorChange}/>
         </Dialog>
         <Dialog open={linkColorPalette} onClose={onLinkColorPaletteClose}>
-        <ColorPickerView/>
+        <ColorPickerView color={linkColor} setColor={onLinkColorChange}/>
         </Dialog>
         <DialogTitle id="form-dialog-title">Settings (under development)</DialogTitle>
         <DialogContent dividers style={{overflow:'hidden'}}>
         <Grid container spacing={3} >
-        <Grid container item xs={12} spacing={3} justify="space-between">
+        <Grid container item xs={12} justify="space-between">
           <Grid item>
           <Typography>Set Font :</Typography>
           </Grid>
@@ -76,9 +132,7 @@ export default function SettingsDialog(props) {
           <FontPicker
                     apiKey="AIzaSyAqP3g27lowoxPAfG35GRfaixlYsG08VQU"
                     activeFontFamily={activeFontFamily}
-                    onChange={(nextFont) =>
-                            setActiveFontFamily(nextFont.family)
-                    }
+                    onChange={onFontFamilyChange}
                 />
           </Grid>
          </Grid>
@@ -91,35 +145,41 @@ export default function SettingsDialog(props) {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={fontSize}
-            onChange={(event) => {
-              setFontSize(event.target.value);
-            }}
+            onChange={onFontSizeChange}
           >
-            <MenuItem value={"9px"}>9px</MenuItem>
-            <MenuItem value={"10px"}>10px</MenuItem>
-            <MenuItem value={"11px"}>11px</MenuItem>
-            <MenuItem value={"12Px"}>12px</MenuItem>
-            <MenuItem value={"13Px"}>13px</MenuItem>
-            <MenuItem value={"14Px"}>14px</MenuItem>
-            <MenuItem value={"15Px"}>15px</MenuItem>
-            <MenuItem value={"16Px"}>16px</MenuItem>
-            <MenuItem value={"17Px"}>17px</MenuItem>
-            <MenuItem value={"18Px"}>18px</MenuItem>
-            <MenuItem value={"19Px"}>19px</MenuItem>
-            <MenuItem value={"20Px"}>20px</MenuItem>
-            <MenuItem value={"21Px"}>21px</MenuItem>
-            <MenuItem value={"22Px"}>22px</MenuItem>
-            <MenuItem value={"23Px"}>23px</MenuItem>
-            <MenuItem value={"24Px"}>24px</MenuItem>
+            <MenuItem value={9}>9px</MenuItem>
+            <MenuItem value={10}>10px</MenuItem>
+            <MenuItem value={11}>11px</MenuItem>
+            <MenuItem value={12}>12px</MenuItem>
+            <MenuItem value={13}>13px</MenuItem>
+            <MenuItem value={14}>14px</MenuItem>
+            <MenuItem value={15}>15px</MenuItem>
+            <MenuItem value={16}>16px</MenuItem>
+            <MenuItem value={17}>17px</MenuItem>
+            <MenuItem value={18}>18px</MenuItem>
+            <MenuItem value={19}>19px</MenuItem>
+            <MenuItem value={20}>20px</MenuItem>
+            <MenuItem value={21}>21px</MenuItem>
+            <MenuItem value={22}>22px</MenuItem>
+            <MenuItem value={23}>23px</MenuItem>
+            <MenuItem value={24}>24px</MenuItem>
           </Select>
           </Grid>
           </Grid>
           <Grid container item xs={12} spacing={3} justify="space-between">
           <Grid item>
-          <Typography>Change Theme (light/dark) </Typography>
+          <Typography>Theme :</Typography>
           </Grid>
           <Grid item>
-          <div><ThemeSwitch/></div>
+          <Select
+            labelId="themeMenu"
+            id="themeMenu"
+            value={activeTheme}
+            onChange={onThemeChange}
+          >
+            <MenuItem value={"dark"}>Dark</MenuItem>
+            <MenuItem value={"light"}>Light</MenuItem>
+          </Select>
           </Grid>
           </Grid>
           <Grid container item xs={12} spacing={3} justify="space-between">
@@ -127,7 +187,7 @@ export default function SettingsDialog(props) {
           <Typography>Font Color :</Typography>
           </Grid>
           <Grid item>
-          <button class="colorButton" onClick={handleFontColorPalette}></button>
+          <Button style={{backgroundColor:fontColor}} size='large' variant="contained" onClick={handleFontColorPalette}></Button>
           </Grid>
           </Grid>
           <Grid container item xs={12} spacing={3} justify="space-between">
@@ -135,7 +195,7 @@ export default function SettingsDialog(props) {
           <Typography>Link Color :</Typography>
           </Grid>
           <Grid item>
-          <button class="colorButton" onClick={handleLinkColorPalette}></button>
+          <Button style={{backgroundColor:linkColor}} size='large' variant="contained" onClick={handleLinkColorPalette}></Button>
           </Grid>
           </Grid>
           <Grid container item xs={12} spacing={3}>
@@ -146,10 +206,13 @@ export default function SettingsDialog(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          {false&&<Button onClick={handleReset} color="primary">
+            Reset
+          </Button>}
+          <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>

@@ -1,6 +1,10 @@
 div[id^="font-picker"] .dropdown-button {
     background: transparent;
   }
+  
+div[id^="font-picker"] {
+    width: 170px;
+}
 
 div[id^="font-picker"] ul{
     background: #424242;
@@ -15,7 +19,6 @@ div[id^="font-picker"] .dropdown-button:hover {
     background: transparent;
 }
 .colorButton {
-    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 15px 32px;

@@ -276,7 +276,7 @@ export default function ListView(props) {
         <Dialog open={feedback} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
           {feedbackDialog()}
         </Dialog>
-        <SettingsDialog open={settings} onClose={handleDialogClose} aria-labelledby="form-dialog-title"/>
+        <SettingsDialog {...props} open={settings} onClose={handleDialogClose} aria-labelledby="form-dialog-title"/>
     </React.Fragment>
     </div>
   );

@@ -14,6 +14,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import blue from '@material-ui/core/colors/blue';
 
 import DB from './js/Database';
+import PreferenceMgr from './js/PreferenceMgr';
 
 import './style.css';
 import './App.css';
@@ -25,6 +26,12 @@ const propTypes = {
 	filter: PropTypes.string.isRequired,
 	height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
+  fontSize: PropTypes.number.isRequired,
+  fontColor: PropTypes.string.isRequired,
+  linkColor: PropTypes.string.isRequired,
+  linkOpacity: PropTypes.number.isRequired,
+  fontFamily: PropTypes.string.isRequired,
+  nodeShape: PropTypes.string.isRequired
 };
 
 
@@ -114,6 +121,7 @@ class App extends React.PureComponent {
 
   componentDidMount() {
     //initialize database
+    PreferenceMgr.initPreferenceMgr();
     DB.initDatabase();
     DB.getTreeData().then((json)=>{
       this.processTreeData(json);
@@ -146,17 +154,14 @@ class App extends React.PureComponent {
 		return (
       <ThemeProvider theme={this.theme}>
 			<div id="container" >
-        <Header filter={this.props.filter} 
+        <Header {...this.props}
           resetView={this.reset}
           editMode={this.state.editMode}
           setEditMode={this.setEditMode}
           saveTree={this.saveTree}/>
 				{Object.keys(this.state.json).length && <TreeContainer
-					activeNode={this.props.activeNode}
+					{...this.props}
 					data={this.state.json}
-					filter={this.props.filter}
-					height={this.props.height}
-					width={this.props.width}
           editMode={this.state.editMode}
           setZoomRef={this.setZoomRef}
           getNextPerson={this.getNextPerson}/>}

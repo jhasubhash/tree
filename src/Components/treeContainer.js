@@ -186,12 +186,16 @@ export default class TreeContainer extends React.PureComponent {
 				getChildren={this.getChildren}
 				margins={{bottom : 10, left : 20, right : 100, top : 10}}
 				gProps={{
-					className: 'apply-font node',
+					className: 'node',
 					onClick: this.handleClick,
 				}}
+				nodeShape={this.props.nodeShape}
+				nodeProps={{r:2, stroke: this.props.linkColor, fill: this.props.linkColor}}
 				svgProps={{
 					viewBox: 0+" "+0+" "+this.props.width+" "+this.props.height
 				}}
+				textProps={{fontSize:this.props.fontSize, fill:this.props.fontColor, fontFamily:this.props.fontFamily}}
+				pathProps={{stroke:this.props.linkColor, strokeOpacity:this.props.linkOpacity}}
 				steps={30}/>
 				</div>
 			);

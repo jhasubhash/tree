@@ -2,6 +2,8 @@ import ActiveNode from './activeNode';
 import Filter from './filter';
 import Height from './height';
 import Width from './width';
+import {FontSize, FontColor, LinkColor, LinkOpacity, FontFamily, NodeShape} from './preferences';
+
 import { combineReducers, createStore } from 'redux';
 
 export default createStore(
@@ -9,7 +11,13 @@ export default createStore(
 		activeNode: ActiveNode,
 		filter: Filter,
 		height: Height,
-		width: Width
+		width: Width,
+		fontSize: FontSize,
+		fontColor: FontColor,
+		linkColor: LinkColor,
+		linkOpacity: LinkOpacity,
+		fontFamily: FontFamily,
+		nodeShape: NodeShape
 	}),
 	undefined,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
