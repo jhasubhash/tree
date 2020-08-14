@@ -10,34 +10,84 @@ import Typography from '@material-ui/core/Typography';
 import FontPicker from "font-picker-react";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import ThemeSwitch from './themeSwitch'
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import ColorPickerView from './ColorPickerView';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 import './SettingsDialog.css';
+import { Hidden } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
+
 
 export default function SettingsDialog(props) {
-
+  const classes = useStyles();
   const [activeFontFamily, setActiveFontFamily] = React.useState("Helvetica Neue");
   const [fontSize, setFontSize] = React.useState(11);
+  const [fontColorPalette, setFontColorPalette] = React.useState(false);
+  const [linkColorPalette, setLinkColorPalette] = React.useState(false);
 
   const handleClose = () => {
     props.onClose();
   }
+  const handleFontColorPalette = () => {
+    setFontColorPalette(!fontColorPalette);
+  }
+
+  const handleLinkColorPalette = () => {
+    setLinkColorPalette(!linkColorPalette);
+  }
+  const onFontColorPaletteClose = () => {
+    setFontColorPalette(false);
+  }
+  const onLinkColorPaletteClose = () => {
+    setLinkColorPalette(false);
+  }
 
   return (
-    <div>
+    <div className={classes.root}>
       <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Settings</DialogTitle>
-        <DialogContent dividers>
-          <Typography style={{float:'left'}}>Set Font :</Typography>
-          <FontPicker style={{float:'right'}}
+        <Dialog open={fontColorPalette} onClose={onFontColorPaletteClose}>
+        <ColorPickerView/>
+        </Dialog>
+        <Dialog open={linkColorPalette} onClose={onLinkColorPaletteClose}>
+        <ColorPickerView/>
+        </Dialog>
+        <DialogTitle id="form-dialog-title">Settings (under development)</DialogTitle>
+        <DialogContent dividers style={{overflow:'hidden'}}>
+        <Grid container spacing={3} >
+        <Grid container item xs={12} spacing={3} justify="space-between">
+          <Grid item>
+          <Typography>Set Font :</Typography>
+          </Grid>
+          <Grid item>
+          <FontPicker
                     apiKey="AIzaSyAqP3g27lowoxPAfG35GRfaixlYsG08VQU"
                     activeFontFamily={activeFontFamily}
                     onChange={(nextFont) =>
                             setActiveFontFamily(nextFont.family)
                     }
                 />
-          <br/>
-          <Typography style={{float:'left'}}>Font Size :</Typography>
-          <Select style={{float:'right'}}
+          </Grid>
+         </Grid>
+        <Grid container item xs={12} spacing={3} justify="space-between">
+        <Grid item>
+          <Typography>Font Size :</Typography>
+          </Grid>
+          <Grid item>
+          <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={fontSize}
@@ -62,11 +112,38 @@ export default function SettingsDialog(props) {
             <MenuItem value={"23Px"}>23px</MenuItem>
             <MenuItem value={"24Px"}>24px</MenuItem>
           </Select>
-          <br/>
-          <Typography style={{float:'left'}}>Change Theme (light/dark) </Typography>
-          <br/>
-          <Typography style={{float:'left'}}>Change Background color and texture </Typography>
-          <br/>
+          </Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={3} justify="space-between">
+          <Grid item>
+          <Typography>Change Theme (light/dark) </Typography>
+          </Grid>
+          <Grid item>
+          <div><ThemeSwitch/></div>
+          </Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={3} justify="space-between">
+          <Grid item>
+          <Typography>Font Color :</Typography>
+          </Grid>
+          <Grid item>
+          <button class="colorButton" onClick={handleFontColorPalette}></button>
+          </Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={3} justify="space-between">
+          <Grid item>
+          <Typography>Link Color :</Typography>
+          </Grid>
+          <Grid item>
+          <button class="colorButton" onClick={handleLinkColorPalette}></button>
+          </Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={3}>
+          <Grid item>
+          <Typography>Change Background color and texture </Typography>
+          </Grid>
+          </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

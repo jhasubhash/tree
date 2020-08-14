@@ -4,6 +4,8 @@ div[id^="font-picker"] .dropdown-button {
 
 div[id^="font-picker"] ul{
     background: #424242;
+    position:absolute;
+    box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
   }
 
 div[id^="font-picker"] .dropdown-button:focus {
@@ -11,4 +13,16 @@ div[id^="font-picker"] .dropdown-button:focus {
 }
 div[id^="font-picker"] .dropdown-button:hover {
     background: transparent;
+}
+.colorButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
 }

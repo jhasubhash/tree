@@ -95,13 +95,13 @@ export default function ListView(props) {
         onKeyDown={toggleDrawer(anchor, false)}
         >
         <List>
+          <ListItem button key={'settings'} onClick={()=>{handleClick('settings')}} selected={selectedIndex === 'settings'}>
+                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                <ListItemText primary={"User Settings"} />
+          </ListItem>
           <ListItem button key={'edit'} onClick={()=>{handleClick('edit')}} selected={selectedIndex === 'edit'}>
                 <ListItemIcon><EditIcon /></ListItemIcon>
                 <ListItemText primary={!props.editMode?"Edit Tree":"Save Tree"} />
-          </ListItem>
-          <ListItem button key={'settings'} onClick={()=>{handleClick('settings')}} selected={selectedIndex === 'settings'}>
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary={"Settings"} />
           </ListItem>
           <ListItem button key={'feedback'} onClick={()=>{handleClick('feedback')}} selected={selectedIndex === 'feedback'}>
                 <ListItemIcon><EmailIcon /></ListItemIcon>

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Filter from './filter';
-import ThemeSwitch from './themeSwitch'
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import { setActiveNode, setFilter, resize } from '../Reducers/actions';
@@ -67,7 +66,6 @@ export default class Header extends React.PureComponent {
 						color="primary"
 						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px', float: 'right' }}
 						size="small" ><CloseIcon/></IconButton>}
-				{false && <div style={{float: 'right'}}><ThemeSwitch/></div>}
 			</div>);
 	}
 }
