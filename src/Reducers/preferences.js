@@ -59,7 +59,7 @@ export function LinkOpacity(state, action) {
 	} else {
 		// eslint-disable-next-line default-case
 		switch (action.type) {
-			case ActionType.SET_LINK_Opacity:
+			case ActionType.SET_LINK_OPACITY:
 				return action.opacity;
 		}
 	}

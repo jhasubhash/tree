@@ -68,6 +68,7 @@ class PreferenceMgr {
         setFontSize(this.preferences.fontSize);
         setFontFamily(this.preferences.fontFamily);
         setLinkColor(this.preferences.linkColor);
+        setLinkOpacity(this.preferences.linkOpacity);
         setFontColor(this.preferences.fontColor);
 
         setBodyBgColor(this.preferences.bgColor);
@@ -131,6 +132,10 @@ class PreferenceMgr {
     setLinkOpacity(opacity){
         this.preferences.linkOpacity = opacity;
         setLinkOpacity(opacity);
+    }
+
+    getLinkOpacity(opacity){
+        return this.preferences.linkOpacity;
     }
 
     getPreferences(){

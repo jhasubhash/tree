@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import ColorPickerView from './ColorPickerView';
 import PreferenceMgr from '../js/PreferenceMgr';
+import Slider from '@material-ui/core/Slider';
 
 import './SettingsDialog.css';
 import { Hidden } from '@material-ui/core';
@@ -43,12 +44,14 @@ export default function SettingsDialog(props) {
   const [linkColor, setLinkColor] = React.useState(props.linkColor);
   const [activeTexture, setActiveTexture] = React.useState(props.activeTexture);
   const [bgColor, setBackgroundColor] = React.useState(props.bgColor);
+  const [linkOpacity, setLinkOpacity] = React.useState(props.linkOpacity);
 
   React.useEffect(() => {
     setFontSize(props.fontSize);
     setActiveFontFamily(props.fontFamily);
     setFontColor(props.fontColor);
     setLinkColor(props.linkColor);
+    setLinkOpacity(props.linkOpacity);
     setActiveTexture(PreferenceMgr.getTexture());
     setBackgroundColor(PreferenceMgr.getBackgroundColor());
   },[props]);
@@ -63,6 +66,7 @@ export default function SettingsDialog(props) {
     setActiveFontFamily(preference.fontFamily);
     setFontColor(preference.fontColor);
     setLinkColor(preference.linkColor);
+    setLinkOpacity(preference.linkOpacity);
     setActiveTexture(preference.textureName);
     setBackgroundColor(preference.bgColor);
     handleClose();
@@ -87,6 +91,11 @@ export default function SettingsDialog(props) {
 
   const handleLinkColorPalette = () => {
     setLinkColorPalette(!linkColorPalette);
+  }
+
+  const handleOpacityChange = (event, newValue) => {
+    setLinkOpacity(newValue);
+    PreferenceMgr.setLinkOpacity(newValue);
   }
 
   const handleBgColorPalette = () => {
@@ -227,6 +236,16 @@ export default function SettingsDialog(props) {
           <Button style={{backgroundColor:linkColor}} size='small' variant="contained" onClick={handleLinkColorPalette}>&nbsp;</Button>
           </Grid>
           </Grid>
+          <Grid container item xs={12} justify="space-between">
+          <Grid item>
+          <Typography>Link Opacity :</Typography>
+          </Grid>
+          <Grid item>
+          <Slider defaultValue={linkOpacity} min={0} step={0.1} max={1} style={{width:'150px'}} 
+            value={linkOpacity} onChange={handleOpacityChange}
+            aria-labelledby="continuous-slider" />
+          </Grid>
+          </Grid>
           <Grid container item xs={12} spacing={3} justify="space-between">
           <Grid item>
           <Typography>Canvas Color :</Typography>
@@ -267,6 +286,18 @@ export default function SettingsDialog(props) {
             <MenuItem value={"circles"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("circles")}}>Circles</MenuItem>
             <MenuItem value={"clean-gray-paper"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("clean-gray-paper")}}>Clean-gray-paper</MenuItem>
             <MenuItem value={"climpek"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("climpek")}}>Climpek</MenuItem>
+            <MenuItem value={"dimension"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("dimension")}}>Dimension</MenuItem>
+            <MenuItem value={"diamonds-are-forever"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("diamonds-are-forever")}}>Diamonds-are-forever</MenuItem>
+            <MenuItem value={"diamond-eyes"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("diamond-eyes")}}>Diamond-eyes</MenuItem>
+            <MenuItem value={"green-dust-and-scratches"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("green-dust-and-scratches")}}>Green-dust-and-scratches</MenuItem>
+            <MenuItem value={"leather"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("leather")}}>Leather</MenuItem>
+            <MenuItem value={"large-leather"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("large-leather")}}>Large-leather</MenuItem>
+            <MenuItem value={"light-gray"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("light-gray")}}>Light-gray</MenuItem>
+            <MenuItem value={"lyonnette"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("lyonnette")}}>Lyonnette</MenuItem>
+            <MenuItem value={"maze-white"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("maze-white")}}>Maze-white</MenuItem>
+            <MenuItem value={"skulls"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("skulls")}}>Skulls</MenuItem>
+            <MenuItem value={"swirl"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("swirl")}}>Swirl</MenuItem>
+            <MenuItem value={"washi"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("washi")}}>Washi</MenuItem>
             
           </Select></Grid>
           </Grid>

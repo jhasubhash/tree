@@ -54,7 +54,7 @@ export function setLinkColor(color) {
 export function setLinkOpacity(opacity) {
 	Store.dispatch({
 		type: ActionType.SET_LINK_OPACITY,
-		size: opacity
+		opacity: opacity
 	});
 }
 export function setFontFamily(family) {
