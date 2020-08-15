@@ -15,12 +15,7 @@ ReactDOM.render(
     <Switch>
       <Route path="/" exact>
         <Provider store={Store}>
-          <App editMode={false}/>
-        </Provider>
-      </Route>
-      <Route path="/edit">
-        <Provider store={Store}>
-          <App editMode={true}/>
+          <App qStr={window.location.search}/>
         </Provider>
       </Route>
     </Switch>

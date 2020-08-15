@@ -97,7 +97,7 @@ export default function ListView(props) {
         <List>
           <ListItem button key={'settings'} onClick={()=>{handleClick('settings')}} selected={selectedIndex === 'settings'}>
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
-                <ListItemText primary={"User Settings"} />
+                <ListItemText primary={"Tree Settings"} />
           </ListItem>
           <ListItem button key={'edit'} onClick={()=>{handleClick('edit')}} selected={selectedIndex === 'edit'}>
                 <ListItemIcon><EditIcon /></ListItemIcon>

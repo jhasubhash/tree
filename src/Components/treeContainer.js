@@ -62,6 +62,9 @@ export default class TreeContainer extends React.PureComponent {
 		}).call(this.zoom)
 		  .on("dblclick.zoom", null);
 		this.props.setZoomRef(this.zoom);
+		if(this.props.qStr){
+			setFilter(decodeURI(this.props.qStr.substr(1)));
+		}
 	}
 
 	populateCloseSet(node){
