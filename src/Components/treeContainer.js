@@ -7,7 +7,10 @@ import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom';
 import { select, event, selectAll } from 'd3-selection';
 import { contextMenu, Menu, Item , theme, animation} from 'react-contexify';
 import MenuDialog from './MenuDialog'
+import * as qs from 'query-string';
+
 import 'react-contexify/dist/ReactContexify.min.css';
+import PreferenceMgr from '../js/PreferenceMgr';
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -63,7 +66,11 @@ export default class TreeContainer extends React.PureComponent {
 		  .on("dblclick.zoom", null);
 		this.props.setZoomRef(this.zoom);
 		if(this.props.qStr){
-			setFilter(decodeURI(this.props.qStr.substr(1)));
+			const parsed = qs.parse(this.props.qStr);
+			if(parsed.name)
+			setFilter(parsed.name);
+			if(parsed.theme)
+			PreferenceMgr.setActiveTheme(parsed.theme);
 		}
 	}
 
