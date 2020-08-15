@@ -37,15 +37,20 @@ export default function SettingsDialog(props) {
   const [fontSize, setFontSize] = React.useState(props.fontSize);
   const [fontColorPalette, setFontColorPalette] = React.useState(false);
   const [linkColorPalette, setLinkColorPalette] = React.useState(false);
+  const [bgColorPalette, setBgColorPalette] = React.useState(false);
   const [activeTheme, setActiveTheme] = React.useState("dark");
   const [fontColor, setFontColor] = React.useState(props.fontColor);
   const [linkColor, setLinkColor] = React.useState(props.linkColor);
+  const [activeTexture, setActiveTexture] = React.useState(props.activeTexture);
+  const [bgColor, setBackgroundColor] = React.useState(props.bgColor);
 
   React.useEffect(() => {
     setFontSize(props.fontSize);
     setActiveFontFamily(props.fontFamily);
     setFontColor(props.fontColor);
     setLinkColor(props.linkColor);
+    setActiveTexture(PreferenceMgr.getTexture());
+    setBackgroundColor(PreferenceMgr.getBackgroundColor());
   },[props]);
 
   const handleClose = () => {
@@ -58,6 +63,8 @@ export default function SettingsDialog(props) {
     setActiveFontFamily(preference.fontFamily);
     setFontColor(preference.fontColor);
     setLinkColor(preference.linkColor);
+    setActiveTexture(preference.textureName);
+    setBackgroundColor(preference.bgColor);
     handleClose();
   }
   const handleReset = () => {
@@ -81,11 +88,20 @@ export default function SettingsDialog(props) {
   const handleLinkColorPalette = () => {
     setLinkColorPalette(!linkColorPalette);
   }
+
+  const handleBgColorPalette = () => {
+    setBgColorPalette(!bgColorPalette);
+  }
+
   const onFontColorPaletteClose = () => {
     setFontColorPalette(false);
   }
   const onLinkColorPaletteClose = () => {
     setLinkColorPalette(false);
+  }
+
+  const onBgColorPaletteClose = () => {
+    setBgColorPalette(false);
   }
 
   const onThemeChange = (event) => {
@@ -95,6 +111,16 @@ export default function SettingsDialog(props) {
   const onFontSizeChange = (event) => {
     setFontSize(event.target.value);
     PreferenceMgr.setFontSize(event.target.value);
+  }
+
+  const onTextureChange = (event) => {
+    setActiveTexture(event.target.value);
+    PreferenceMgr.setTexture(event.target.value);
+  }
+
+  const onBgColorChange = (color) => {
+    setBackgroundColor(color);
+    PreferenceMgr.setBackgroundColor(color);
   }
 
   const onFontFamilyChange = (nextFont)=>{
@@ -121,7 +147,10 @@ export default function SettingsDialog(props) {
         <Dialog open={linkColorPalette} onClose={onLinkColorPaletteClose}>
         <ColorPickerView color={linkColor} setColor={onLinkColorChange}/>
         </Dialog>
-        <DialogTitle id="form-dialog-title">Settings (under development)</DialogTitle>
+        <Dialog open={bgColorPalette} onClose={onBgColorPaletteClose}>
+        <ColorPickerView color={bgColor} setColor={onBgColorChange}/>
+        </Dialog>
+        <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>Settings</DialogTitle>
         <DialogContent dividers style={{overflow:'hidden'}}>
         <Grid container spacing={3} >
         <Grid container item xs={12} justify="space-between">
@@ -187,7 +216,7 @@ export default function SettingsDialog(props) {
           <Typography>Font Color :</Typography>
           </Grid>
           <Grid item>
-          <Button style={{backgroundColor:fontColor}} size='large' variant="contained" onClick={handleFontColorPalette}></Button>
+          <Button style={{backgroundColor:fontColor}} size='small' variant="contained" onClick={handleFontColorPalette}>&nbsp;</Button>
           </Grid>
           </Grid>
           <Grid container item xs={12} spacing={3} justify="space-between">
@@ -195,13 +224,34 @@ export default function SettingsDialog(props) {
           <Typography>Link Color :</Typography>
           </Grid>
           <Grid item>
-          <Button style={{backgroundColor:linkColor}} size='large' variant="contained" onClick={handleLinkColorPalette}></Button>
+          <Button style={{backgroundColor:linkColor}} size='small' variant="contained" onClick={handleLinkColorPalette}>&nbsp;</Button>
           </Grid>
           </Grid>
-          <Grid container item xs={12} spacing={3}>
+          <Grid container item xs={12} spacing={3} justify="space-between">
           <Grid item>
-          <Typography>Change Background color and texture </Typography>
+          <Typography>Canvas Color :</Typography>
           </Grid>
+          <Grid item>
+          <Button style={{backgroundColor:bgColor}} size='small' variant="contained" onClick={handleBgColorPalette}>&nbsp;</Button>
+          </Grid>
+          </Grid>
+          <Grid container item xs={12} justify="space-between">
+          <Grid item>
+          <Typography>Texture : </Typography>
+          </Grid>
+          <Grid item>
+          <Select
+            labelId="textureMenu"
+            id="textureMenu"
+            value={activeTexture}
+            onChange={onTextureChange}
+            style={{width:'170px'}}
+          >
+            <MenuItem value={"none"}>None</MenuItem>
+            <MenuItem value={"arabesque"}>Arabesque</MenuItem>
+            <MenuItem value={"45-degree-fabric-light"}>45-degree-fabric-light</MenuItem>
+            <MenuItem value={"asfalt-light"}>Asfalt-light</MenuItem>
+          </Select></Grid>
           </Grid>
           </Grid>
         </DialogContent>
