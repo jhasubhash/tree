@@ -46,6 +46,7 @@ themeMap['classic'] = {
 function addGoogleFont(FontName) {
     $("head").append("<link href='https://fonts.googleapis.com/css?family=" + FontName + "' rel='stylesheet' type='text/css'>");
 }
+
 addGoogleFont(orgPref.fontFamily);
 
 function setBodyBgColor(color){

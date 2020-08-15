@@ -41,7 +41,7 @@ export default function ListView(props) {
   const ref1 = React.useRef(React.createRef());
   const [selectedIndex, setSelectedIndex] = React.useState(1);
   const [menu, setMenu] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
+  const [editView, setEditView] = React.useState(false);
   const [feedback, setFeedback] = React.useState(false);
   const [feedbackFailed, setFeedbackFailed] = React.useState(false);
   const [invalidPassword, setInvalidPassword] = React.useState(false);
@@ -63,7 +63,7 @@ export default function ListView(props) {
   const handleDialogOpen = (anchor, open) => {
     if(anchor === 'edit'){
       if(!props.editMode)
-        setEdit(open);
+        setEditView(open);
       else{
         props.handleSaveTree();
         //props.setEditMode(false);
@@ -76,7 +76,7 @@ export default function ListView(props) {
   };
 
   const handleDialogClose = () => {
-    setEdit(false);
+    setEditView(false);
     setFeedback(false);
     setSettings(false);
   };
@@ -114,7 +114,7 @@ export default function ListView(props) {
   const handleClose = () => {
     setInvalidPassword(false);
     setFeedbackFailed(false);
-    setEdit(false);
+    setEditView(false);
     setFeedback(false);
     setSettings(false);
   };
@@ -147,8 +147,8 @@ export default function ListView(props) {
   const handleEditSubmit = () => {
     if(editText.value === 'admin333'){
       setInvalidPassword(false);
-      setEdit(false);
-		  setActiveNode('0');
+      setEditView(false);
+		  //setActiveNode('0');
 		  setFilter('');
       props.setEditMode(true);
     }else{
@@ -270,7 +270,7 @@ export default function ListView(props) {
         <Drawer  classes={{ paper: classes.drawer }} anchor={'left'} open={menu} onClose={toggleDrawer(anchor, false)}>
         {list(anchor,ref1)}
         </Drawer>
-        <Dialog open={edit} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+        <Dialog open={editView} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
           {editDialog()}
         </Dialog>
         <Dialog open={feedback} onClose={handleDialogClose} aria-labelledby="form-dialog-title">

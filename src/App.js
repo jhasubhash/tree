@@ -86,7 +86,7 @@ class App extends React.PureComponent {
 
   getNextPerson = ()=>{
     let nxt = {};
-    nxt.name = "Add Name ...";
+    nxt.name = "New Child";
     nxt.id = (this.id++).toString();
     nxt.children = [];
     nxt.partner = {name:""};
@@ -135,7 +135,6 @@ class App extends React.PureComponent {
   }
 
   setEditMode = (mode)=>{
-    this.reset();
     this.setState({ editMode: mode });
   }
 

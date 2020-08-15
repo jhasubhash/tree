@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from 'react-tree-graph';
 import { setFilter, setActiveNode } from '../Reducers/actions';
-import Form from './form'
-import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
-import { select, event, selectAll } from 'd3-selection'
+import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom';
+import { select, event, selectAll } from 'd3-selection';
+import { contextMenu, Menu, Item , theme, animation} from 'react-contexify';
+import MenuDialog from './MenuDialog'
+import 'react-contexify/dist/ReactContexify.min.css';
 
 const propTypes = {
 	activeNode: PropTypes.string,
@@ -15,6 +17,22 @@ const propTypes = {
 	width: PropTypes.number
 };
 
+const menuId = 'adminMenu';
+
+const AdminMenu = ({ menuId, onClickCb }) => (
+  <Menu id={menuId} theme={theme.dark} animation={animation.zoom}>
+    <Item onClick={() => onClickCb('Primary')}>
+      Rename
+    </Item>
+    <Item onClick={() => onClickCb('Partner')}>
+      Rename Partner
+    </Item>
+    <Item onClick={() => onClickCb('Children')}>
+      Add/Remove Children
+    </Item>
+  </Menu>
+);
+
 export default class TreeContainer extends React.PureComponent {
 	constructor(props){
 		super(props);
@@ -22,12 +40,13 @@ export default class TreeContainer extends React.PureComponent {
 		this.state = {
 			key:0,
 			currentNode:undefined,
-			formActive: false
+			editNode: undefined,
+			menuDialog: false,
+			dialogId: undefined
 		}
 		this.closeNode = new Set();
 		this.hiddenNode = new Set();
-		if(!this.props.editMode)
-			this.populateCloseSet(this.data);
+		this.populateCloseSet(this.data);
 	}
 
 	zoomed = () => {
@@ -43,10 +62,6 @@ export default class TreeContainer extends React.PureComponent {
 		}).call(this.zoom)
 		  .on("dblclick.zoom", null);
 		this.props.setZoomRef(this.zoom);
-		//disable right click
-		/*document.addEventListener('contextmenu', (e) => {
-		  e.preventDefault();
-		});*/
 	}
 
 	populateCloseSet(node){
@@ -66,15 +81,15 @@ export default class TreeContainer extends React.PureComponent {
 
 	handleClick = (event, node) => {
 		this.setState({ currentNode: node });
-		if(!this.props.editMode){
-			setFilter('');
-		}else{
-			this.setState({ formActive: true });
-		}
+		setFilter('');
 	}
 
-	formClose = (data) => {
-		this.setState({ formActive: false })
+	handleRightClick = (ev, node) => {
+		ev.preventDefault();
+		this.setState({ editNode: node });
+		if(this.props.editMode){
+			contextMenu.show({id: menuId, event: ev });
+		}
 	}
 
 	getRoot(json, nodeId) {
@@ -131,7 +146,7 @@ export default class TreeContainer extends React.PureComponent {
 		if(!node.id) return node.children;
 		/*if(this.props.filter && !this.state.currentNode) 
 			children = node.children;*/
-		if(this.state.currentNode === node.id && !this.props.editMode){
+		if(this.state.currentNode === node.id){
 			this.state.currentNode = undefined;
 			if(this.closeNode.has(node.id)){
 				this.closeNode.delete(node.id);
@@ -149,13 +164,18 @@ export default class TreeContainer extends React.PureComponent {
 		return children;
 	}
 
+	onMenuDialogClose = (changed)=>{
+		this.setState({ menuDialog: false });
+	}
+
+	adminMenuCb = (id) => {
+		this.setState({ menuDialog: true, dialogId:id});
+	}
+
 	render() {
 		if(this.props.activeNode === '0'){
 			setActiveNode(null);
-			if(!this.props.editMode)
 			this.populateCloseSet(this.data)
-			else
-			this.resetCloseSet(this.data)
 		}
 		if(this.props.activeNode === 'all'){
 			setActiveNode(null);
@@ -172,11 +192,14 @@ export default class TreeContainer extends React.PureComponent {
 
 		return (
 			<div>
-			{this.state.formActive &&
-			<Form nodeId={this.state.currentNode} 
-					data={this.data}
-					formSubmitCB={this.formClose}
-					getNextPerson={this.props.getNextPerson}/>}
+			<AdminMenu menuId={menuId} onClickCb={this.adminMenuCb}/>
+			{this.state.menuDialog && 
+			<MenuDialog dialogId={this.state.dialogId} 
+							nodeId={this.state.editNode} 
+							data={this.data} 
+							onClose={this.onMenuDialogClose}
+							getNextPerson={this.props.getNextPerson}/>}
+
 			<Tree
 				animated
 				data={root}
@@ -188,6 +211,7 @@ export default class TreeContainer extends React.PureComponent {
 				gProps={{
 					className: 'node',
 					onClick: this.handleClick,
+					onContextMenu: this.handleRightClick
 				}}
 				nodeShape={this.props.nodeShape}
 				nodeProps={{r:2, stroke: this.props.linkColor, fill: this.props.linkColor}}
