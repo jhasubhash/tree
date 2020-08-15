@@ -23,11 +23,8 @@ function setBodyBgColor(color){
     $('body').css('background-color', color);
 }
 
-function setBodyBackground(textureName){
-    if(textureName === 'none')
-        $('body').css('background-image', 'none');
-    else
-        $('body').css('background-image', 'url(https://www.transparenttextures.com/patterns/'+textureName+'.png)');
+function setBodyBackground(url){
+        $('body').css('background-image', url);
 }
 
 class PreferenceMgr {
@@ -74,7 +71,7 @@ class PreferenceMgr {
         setFontColor(this.preferences.fontColor);
 
         setBodyBgColor(this.preferences.bgColor);
-        setBodyBackground(this.preferences.textureName);
+        setBodyBackground(this.getBackgroundUrl(this.preferences.textureName));
     }
 
     savePreferences(){
@@ -152,9 +149,15 @@ class PreferenceMgr {
         return this.preferences.bgColor;
     }
 
+    getBackgroundUrl(textureName){
+        if(textureName === 'none')
+            return textureName;
+        return 'url(https://www.transparenttextures.com/patterns/'+textureName+'.png)';
+    }
+
     setTexture(textureName){
         this.preferences.textureName = textureName;
-        setBodyBackground(textureName);
+        setBodyBackground(this.getBackgroundUrl(textureName));
     }
 
     getTexture(){

@@ -248,9 +248,26 @@ export default function SettingsDialog(props) {
             style={{width:'170px'}}
           >
             <MenuItem value={"none"}>None</MenuItem>
-            <MenuItem value={"arabesque"}>Arabesque</MenuItem>
-            <MenuItem value={"45-degree-fabric-light"}>45-degree-fabric-light</MenuItem>
-            <MenuItem value={"asfalt-light"}>Asfalt-light</MenuItem>
+            <MenuItem value={"arabesque"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("arabesque")}}>Arabesque</MenuItem>
+            <MenuItem value={"45-degree-fabric-light"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("45-degree-fabric-light")}}>45-degree-fabric-light</MenuItem>
+            <MenuItem value={"asfalt-light"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("asfalt-light")}}>Asfalt-light</MenuItem>
+            <MenuItem value={"back-pattern"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("back-pattern")}}>Back-pattern</MenuItem>
+            <MenuItem value={"az-subtle"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("az-subtle")}}>Az-subtle</MenuItem>
+            <MenuItem value={"basketball"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("basketball")}}>Basketball</MenuItem>
+            <MenuItem value={"bedge-grunge"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("bedge-grunge")}}>Bedge-grunge</MenuItem>
+            <MenuItem value={"beige-paper"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("beige-paper")}}>Beige-paper</MenuItem>
+            <MenuItem value={"binding-dark"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("binding-dark")}}>Binding-dark</MenuItem>
+            <MenuItem value={"binding-light"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("binding-light")}}>Binding-light</MenuItem>
+            <MenuItem value={"black-thread-light"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("black-thread-light")}}>Black-thread-light</MenuItem>
+            <MenuItem value={"blizzard"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("blizzard")}}>Blizzard</MenuItem>
+            <MenuItem value={"brushed-alum"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("brushed-alum")}}>Brushed-alum</MenuItem>
+            <MenuItem value={"brushed-alum-dark"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("brushed-alum-dark")}}>Brushed-alum-dark</MenuItem>
+            <MenuItem value={"carbon-fibre"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("carbon-fibre")}}>Carbon-fibre</MenuItem>
+            <MenuItem value={"cardboard"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("cardboard")}}>Cardboard</MenuItem>
+            <MenuItem value={"circles"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("circles")}}>Circles</MenuItem>
+            <MenuItem value={"clean-gray-paper"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("clean-gray-paper")}}>Clean-gray-paper</MenuItem>
+            <MenuItem value={"climpek"} style={{backgroundImage:PreferenceMgr.getBackgroundUrl("climpek")}}>Climpek</MenuItem>
+            
           </Select></Grid>
           </Grid>
           </Grid>
