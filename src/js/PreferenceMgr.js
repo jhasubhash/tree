@@ -4,11 +4,11 @@ import { setLinkOpacity, setFontFamily, setNodeShape } from '../Reducers/actions
 import $ from 'jquery';
 
 const orgPref = {
-    fontFamily : "Helvetica Neue",
+    fontFamily : "Libre Franklin",
     fontSize : 12,
     fontColor : '#F4F4F4',
     linkColor : '#2593B8',
-    linkOpacity : 0.4,
+    linkOpacity : 0.5,
     nodeShape : 'circle',
     textureName: 'arabesque',
     bgColor: '#242424',
@@ -18,6 +18,7 @@ const orgPref = {
 function addGoogleFont(FontName) {
     $("head").append("<link href='https://fonts.googleapis.com/css?family=" + FontName + "' rel='stylesheet' type='text/css'>");
 }
+addGoogleFont(orgPref.fontFamily);
 
 function setBodyBgColor(color){
     $('body').css('background-color', color);

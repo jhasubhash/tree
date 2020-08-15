@@ -59,9 +59,7 @@ export default function SettingsDialog(props) {
   const handleClose = () => {
     props.onClose();
   }
-  const handleCancel = () => {
-    PreferenceMgr.setPreferencesFromStore();
-    let preference = PreferenceMgr.getPreferences();
+  const setFromPreference = (preference)=>{
     setFontSize(preference.fontSize);
     setActiveFontFamily(preference.fontFamily);
     setFontColor(preference.fontColor);
@@ -69,15 +67,19 @@ export default function SettingsDialog(props) {
     setLinkOpacity(preference.linkOpacity);
     setActiveTexture(preference.textureName);
     setBackgroundColor(preference.bgColor);
+  }
+
+  const handleCancel = () => {
+    PreferenceMgr.setPreferencesFromStore();
+    let preference = PreferenceMgr.getPreferences();
+    setFromPreference(preference);
     handleClose();
   }
+  
   const handleReset = () => {
-    let preference = PreferenceMgr.getOrgPreferences();
-    setFontSize(preference.fontSize);
-    setActiveFontFamily(preference.fontFamily);
-    setFontColor(preference.fontColor);
-    setLinkColor(preference.linkColor);
     PreferenceMgr.resetPreferences();
+    let preference = PreferenceMgr.getPreferences();
+    setFromPreference(preference);
   }
 
   const handleSave = () => {
@@ -304,9 +306,9 @@ export default function SettingsDialog(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          {false&&<Button onClick={handleReset} color="primary">
+          <Button onClick={handleReset} color="primary">
             Reset
-          </Button>}
+          </Button>
           <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
