@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import FontPicker from "font-picker-react";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import ThemeSwitch from './themeSwitch'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import ColorPickerView from './ColorPickerView';
@@ -18,7 +17,6 @@ import PreferenceMgr from '../js/PreferenceMgr';
 import Slider from '@material-ui/core/Slider';
 
 import './SettingsDialog.css';
-import { Hidden } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +73,7 @@ export default function SettingsDialog(props) {
     setFromPreference(preference);
     handleClose();
   }
-  
+
   const handleReset = () => {
     PreferenceMgr.resetPreferences();
     let preference = PreferenceMgr.getPreferences();

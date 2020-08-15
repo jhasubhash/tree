@@ -12,7 +12,7 @@ const orgPref = {
     nodeShape : 'circle',
     textureName: 'arabesque',
     bgColor: '#242424',
-    version: 1.0
+    version: 1.1
 }
 
 function addGoogleFont(FontName) {
