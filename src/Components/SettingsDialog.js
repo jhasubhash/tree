@@ -52,6 +52,7 @@ export default function SettingsDialog(props) {
     setLinkOpacity(props.linkOpacity);
     setActiveTexture(PreferenceMgr.getTexture());
     setBackgroundColor(PreferenceMgr.getBackgroundColor());
+    setActiveTheme(PreferenceMgr.getActiveTheme());
   },[props]);
 
   const handleClose = () => {
@@ -65,6 +66,7 @@ export default function SettingsDialog(props) {
     setLinkOpacity(preference.linkOpacity);
     setActiveTexture(preference.textureName);
     setBackgroundColor(preference.bgColor);
+    setActiveTheme(preference.theme);
   }
 
   const handleCancel = () => {
@@ -115,6 +117,7 @@ export default function SettingsDialog(props) {
 
   const onThemeChange = (event) => {
     setActiveTheme(event.target.value);
+    PreferenceMgr.setActiveTheme(event.target.value);
   }
 
   const onFontSizeChange = (event) => {
@@ -217,6 +220,7 @@ export default function SettingsDialog(props) {
           >
             <MenuItem value={"dark"}>Dark</MenuItem>
             <MenuItem value={"light"}>Light</MenuItem>
+            <MenuItem value={"classic"}>Classic</MenuItem>
           </Select>
           </Grid>
           </Grid>

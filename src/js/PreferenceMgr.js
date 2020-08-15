@@ -12,7 +12,35 @@ const orgPref = {
     nodeShape : 'circle',
     textureName: 'arabesque',
     bgColor: '#242424',
-    version: 1.1
+    theme: 'dark',
+    version: 1.2
+}
+
+const themeMap = {};
+themeMap['dark'] = orgPref;
+themeMap['light'] = {
+    fontFamily : "Libre Franklin",
+    fontSize : 13,
+    fontColor : '#110000',
+    linkColor : '#071D53',
+    linkOpacity : 0.3,
+    nodeShape : 'circle',
+    textureName: 'cardboard',
+    bgColor: '#FFFFFF',
+    theme: 'light',
+    version: 1.2
+}
+themeMap['classic'] = {
+    fontFamily : "Merriweather",
+    fontSize : 12,
+    fontColor : '#F4F4F4',
+    linkColor : '#E5F702',
+    linkOpacity : 0.6,
+    nodeShape : 'circle',
+    textureName: 'skulls',
+    bgColor: '#242424',
+    theme: 'classic',
+    version: 1.2
 }
 
 function addGoogleFont(FontName) {
@@ -26,6 +54,10 @@ function setBodyBgColor(color){
 
 function setBodyBackground(url){
         $('body').css('background-image', url);
+}
+
+function getPreferenceFromTheme(themeStr){
+    return themeMap[themeStr];
 }
 
 class PreferenceMgr {
@@ -137,6 +169,16 @@ class PreferenceMgr {
 
     getLinkOpacity(opacity){
         return this.preferences.linkOpacity;
+    }
+
+    setActiveTheme(theme){
+        if(theme === this.preferences.theme) return;
+        this.preferences = getPreferenceFromTheme(theme);
+        this.notifyAll();
+    }
+
+    getActiveTheme(){
+        return this.preferences.theme;
     }
 
     getPreferences(){
