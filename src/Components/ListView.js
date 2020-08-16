@@ -61,7 +61,7 @@ export default function ListView(props) {
   }
   const saveCB = (success) => {
     if(success){
-      enqueueSnackbar("Tree data saved succesfully",{ 
+      enqueueSnackbar("Tree data saved successfully",{ 
         variant: 'success',
     })
     }else{
@@ -103,6 +103,7 @@ export default function ListView(props) {
         role="presentation"
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
+        style={{pointerEvents: 'all'}}
         >
         <List>
           <ListItem button key={'settings'} onClick={()=>{handleClick('settings')}} selected={selectedIndex === 'settings'}>

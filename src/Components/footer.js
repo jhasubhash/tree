@@ -39,10 +39,10 @@ export default function Footer(props) {
             <SettingsDialog {...props} open={settingsView} onClose={handleDialogClose}/>
             <FeedbackDialog {...props} open={feedbackView} onClose={handleDialogClose}/>
             <div className={classes.root} id="footer">
-            <Fab color="primary" size={'small'} aria-label="settings" style={{float:'left'}} onClick={onSettings}>
+            <Fab color="primary" size={'small'} aria-label="settings" style={{float:'left', pointerEvents: 'all'}} onClick={onSettings}>
                 <SettingsIcon />
             </Fab>
-            <Fab color="primary" size={'small'} aria-label="feedback" style={{float:'right'}} onClick={onFeedback}>
+            <Fab color="primary" size={'small'} aria-label="feedback" style={{float:'right', pointerEvents: 'all'}} onClick={onFeedback}>
                 <FeedbackIcon />
             </Fab>
             </div>

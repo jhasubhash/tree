@@ -18,6 +18,7 @@ export default class Filter extends React.PureComponent {
 				type="text"
 				placeholder="Find Name ..."
 				value={this.props.filter}
+				style={{pointerEvents: 'all'}}
 				onChange={this.handleChange}/>);
 	}
 }

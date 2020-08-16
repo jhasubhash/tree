@@ -41,30 +41,34 @@ export default class Header extends React.PureComponent {
 	render() {
 		return (
 			<div id="header">
-				<div style={{float: 'left', paddingTop: '0%'}}>
+				<div style={{float: 'left', paddingTop: '0%', pointerEvents: 'all' }}>
 				<ListView {...this.props} handleSaveTree={this.handleSave}/>
 				</div>
 				<Filter filter={this.props.filter}/>
 				<Button onClick={this.handleClick} 
 						variant="contained" 
 						color="primary"
-						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
+						style={{ maxHeight: '25px', minHeight: '25px', 
+						fontSize: '11px', pointerEvents: 'all' }}
 						size="small" >Reset</Button>
 				&nbsp;
 				{!this.props.editMode &&<IconButton onClick={this.handleExpand} 
 						variant="contained" 
 						color="primary"
-						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px' }}
+						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px',
+						pointerEvents: 'all' }}
 						size="small" ><AcUnitIcon/></IconButton>}
 				{this.props.editMode && <IconButton onClick={this.handleSave} 
 						variant="contained" 
 						color="primary"
-						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px', float: 'right' }}
+						style={{ maxHeight: '25px', minHeight: '25px', 
+						fontSize: '11px', float: 'right', pointerEvents: 'all' }}
 						size="small" ><SaveIcon/></IconButton>}<div style={{float: 'right' }}>&nbsp;</div>
 				{this.props.editMode && <IconButton onClick={this.handleCancel} 
 						variant="contained" 
 						color="primary"
-						style={{ maxHeight: '25px', minHeight: '25px', fontSize: '11px', float: 'right' }}
+						style={{ maxHeight: '25px', minHeight: '25px', 
+						fontSize: '11px', float: 'right', pointerEvents: 'all' }}
 						size="small" ><CloseIcon/></IconButton>}
 			</div>);
 	}
