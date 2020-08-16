@@ -23,6 +23,7 @@ import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
 import SettingsDialog from './SettingsDialog';
 import FeedbackDialog from './FeedbackDialog';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles({
   list: {
@@ -44,6 +45,9 @@ export default function ListView(props) {
   const [invalidPassword, setInvalidPassword] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
   let editText = React.createRef();
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -55,13 +59,23 @@ export default function ListView(props) {
     setSelectedIndex(id);
     handleDialogOpen(id, true);
   }
-
+  const saveCB = (success) => {
+    if(success){
+      enqueueSnackbar("Tree data saved succesfully",{ 
+        variant: 'success',
+    })
+    }else{
+      enqueueSnackbar("Failed to save the data",{ 
+        variant: 'error',
+    })
+    }
+  }
   const handleDialogOpen = (anchor, open) => {
     if(anchor === 'edit'){
       if(!props.editMode)
         setEditView(open);
       else{
-        props.handleSaveTree();
+        props.handleSaveTree(saveCB);
         //props.setEditMode(false);
       }
     }

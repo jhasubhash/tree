@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import PreferenceMgr from '../js/PreferenceMgr';
+import { useSnackbar } from 'notistack';
 
 import * as emailjs from 'emailjs-com';
 
@@ -27,6 +28,8 @@ export default function FeedbackDialog(props) {
     const classes = useStyles();
     const [feedbackFailed, setFeedbackFailed] = React.useState(false);
     
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
     let feedbackText = React.createRef();
 
     const handleFeedbackSubmit = () => {
@@ -44,9 +47,15 @@ export default function FeedbackDialog(props) {
             .send("default_service", "template_rLhbphnf", templateParams)
             .then(
                 function(response) {
+                    enqueueSnackbar("Message sent successfully",{ 
+                        variant: 'success',
+                    })
                     console.log("SUCCESS!", response.status, response.text);
                 },
                 function(err) {
+                    enqueueSnackbar("Unable to send message",{ 
+                        variant: 'error',
+                    })
                     console.error("Your message was not able to be sent")
                 }
             );

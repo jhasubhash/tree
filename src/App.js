@@ -11,6 +11,7 @@ import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
 import { select, event, selectAll } from 'd3-selection'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { SnackbarProvider } from 'notistack';
 import blue from '@material-ui/core/colors/blue';
 import ReactGA from 'react-ga';
 
@@ -154,20 +155,27 @@ class App extends React.PureComponent {
     this.setState({ editMode: mode });
   }
 
-  saveTree = ()=>{
+  saveTree = (cb)=>{
     console.log(this.state.json);
     DB.save(this.state.json).then(()=>{
       console.log("Tree Data successfully written!");
       this.setEditMode(false);
+      cb(true);
     })
     .catch(function(error) {
         console.error("Error writing Tree Data : ", error);
+        cb(false);
     });
   }
 
 	render() {
 		return (
       <ThemeProvider theme={this.theme}>
+      <SnackbarProvider maxSnack={1} 
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+        }}>
 			<div id="container" >
         <Header {...this.props}
           treeCred = {this.state.treeCred}
@@ -183,6 +191,7 @@ class App extends React.PureComponent {
           getNextPerson={this.getNextPerson}/>}
         <Footer {...this.props}/>
 			</div>
+      </SnackbarProvider>
     </ThemeProvider>);
 	}
 }
