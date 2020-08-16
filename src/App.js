@@ -12,6 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import blue from '@material-ui/core/colors/blue';
+import ReactGA from 'react-ga';
 
 import DB from './js/Database';
 import PreferenceMgr from './js/PreferenceMgr';
@@ -36,6 +37,11 @@ const propTypes = {
 
 
 const prefersDarkMode = 1;//useMediaQuery('(prefers-color-scheme: dark)');
+
+function initializeReactGA() {
+  ReactGA.initialize('UA-175515238-1');
+  ReactGA.pageview(window.location.pathname);
+}
 
 class App extends React.PureComponent {
   constructor(props){
@@ -134,6 +140,8 @@ class App extends React.PureComponent {
     DB.getTreeCred().then((json)=>{
       this.processTreeCred(json);
     });
+    //init tracking
+    initializeReactGA();
   }
 
   componentWillUnmount() {
