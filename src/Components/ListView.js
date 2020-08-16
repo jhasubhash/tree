@@ -19,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MenuIcon from '@material-ui/icons/Menu';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
 import SettingsDialog from './SettingsDialog';
@@ -105,6 +106,13 @@ export default function ListView(props) {
         onKeyDown={toggleDrawer(anchor, false)}
         style={{pointerEvents: 'all'}}
         >
+        <List>
+          <ListItem button key={'back'}>
+              <ListItemIcon><ArrowBackIcon/></ListItemIcon>
+              <ListItemText primary={'Go Back'} />
+          </ListItem>
+        </List>
+        <Divider />
         <List>
           <ListItem button key={'settings'} onClick={()=>{handleClick('settings')}} selected={selectedIndex === 'settings'}>
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
