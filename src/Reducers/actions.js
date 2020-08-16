@@ -10,8 +10,21 @@ export const ActionType = {
 	SET_LINK_COLOR: 'SET_LINK_COLOR',
 	SET_LINK_OPACITY: 'SET_LINK_OPACITY',
 	SET_FONT_FAMILY: 'SET_FONT_FAMILY',
-	SET_NODE_SHAPE: 'SET_NODE_SHAPE'
+	SET_NODE_SHAPE: 'SET_NODE_SHAPE',
+	SW_INIT: 'SW_INIT',
+	SW_UPDATE: 'SW_UPDATE'
 };
+
+
+export function setServiceWorkerInit(){
+	console.log("service worker init");
+	Store.dispatch({ type: ActionType.SW_INIT });
+}
+
+export function setServiceWorkerUpdate(reg){
+	console.log("service worker Update");
+	Store.dispatch({ type: ActionType.SW_UPDATE, payload: reg });
+}
 
 export function resize() {
 	Store.dispatch({

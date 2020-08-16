@@ -14,7 +14,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { SnackbarProvider } from 'notistack';
 import blue from '@material-ui/core/colors/blue';
 import ReactGA from 'react-ga';
-
+import ServiceWorkerView from './Components/ServiceWorkerView';
 import DB from './js/Database';
 import PreferenceMgr from './js/PreferenceMgr';
 
@@ -33,7 +33,8 @@ const propTypes = {
   linkColor: PropTypes.string.isRequired,
   linkOpacity: PropTypes.number.isRequired,
   fontFamily: PropTypes.string.isRequired,
-  nodeShape: PropTypes.string.isRequired
+  nodeShape: PropTypes.string.isRequired,
+  serviceWorker: PropTypes.object.isRequired
 };
 
 
@@ -176,6 +177,9 @@ class App extends React.PureComponent {
             vertical: 'bottom',
             horizontal: 'center',
         }}>
+      {(this.props.serviceWorker 
+      && (this.props.serviceWorker.serviceWorkerUpdated||this.props.serviceWorker.serviceWorkerInitialized)) 
+      && <ServiceWorkerView {...this.props}/>}
 			<div id="container" >
         <Header {...this.props}
           treeCred = {this.state.treeCred}

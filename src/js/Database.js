@@ -28,6 +28,14 @@ class Database {
           };
         firebase.initializeApp(firebaseConfig);
         this.db = firebase.firestore();
+        this.db.enablePersistence()
+        .catch(function(err) {
+            if (err.code === 'failed-precondition') {
+                console.log("Multiple tabs open, persistence can only be enabled in one tab at a a time.");
+            } else if (err.code === 'unimplemented') {
+                console.log("The current browser does not support all of the features required to enable persistence");
+            }
+        });
         this.treeDataRef = this.db.collection("tree").doc("treeData");
         this.treeCredRef = this.db.collection("tree").doc("cred");
     }
