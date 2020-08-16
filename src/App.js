@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import $ from 'jquery';
 import Header from './Components/header';
+import Footer from './Components/footer';
 import TreeContainer from './Components/treeContainer';
 import localJson from './json';
 import { connect } from 'react-redux';
 import { resize } from './Reducers/actions';
 import { zoom, zoomIdentity, zoomTransform } from 'd3-zoom'
 import { select, event, selectAll } from 'd3-selection'
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import blue from '@material-ui/core/colors/blue';
@@ -181,6 +181,7 @@ class App extends React.PureComponent {
           editMode={this.state.editMode}
           setZoomRef={this.setZoomRef}
           getNextPerson={this.getNextPerson}/>}
+        <Footer {...this.props}/>
 			</div>
     </ThemeProvider>);
 	}

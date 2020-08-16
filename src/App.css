@@ -8,6 +8,14 @@
   width: 100%;
 }
 
+#footer{
+  background-color: transparent;
+  position: absolute;
+  margin-bottom: 1%;
+  bottom: 0px;
+  width: 100%;
+}
+
 /*
 .App-link {
   color: #61dafb;

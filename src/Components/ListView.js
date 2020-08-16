@@ -10,8 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
 import SettingsIcon from '@material-ui/icons/Settings';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import EmailIcon from '@material-ui/icons/Email';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,8 +21,9 @@ import TextField from '@material-ui/core/TextField';
 import MenuIcon from '@material-ui/icons/Menu';
 import './ListView.css';
 import { setActiveNode, setFilter } from '../Reducers/actions';
-import * as emailjs from 'emailjs-com';
 import SettingsDialog from './SettingsDialog';
+import FeedbackDialog from './FeedbackDialog';
+
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -33,8 +33,6 @@ const useStyles = makeStyles({
   },
 });
 
-emailjs.init("user_DyxpTG6qwaTR7AW1vWs4M");
-
 export default function ListView(props) {
   const classes = useStyles();
   const ref = React.useRef(null);
@@ -43,10 +41,8 @@ export default function ListView(props) {
   const [menu, setMenu] = React.useState(false);
   const [editView, setEditView] = React.useState(false);
   const [feedback, setFeedback] = React.useState(false);
-  const [feedbackFailed, setFeedbackFailed] = React.useState(false);
   const [invalidPassword, setInvalidPassword] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
-  let feedbackText = React.createRef();
   let editText = React.createRef();
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -72,7 +68,7 @@ export default function ListView(props) {
     if(anchor === 'settings')
       setSettings(open);
     if(anchor === 'feedback')
-    setFeedback(open);
+      setFeedback(open);
   };
 
   const handleDialogClose = () => {
@@ -104,7 +100,7 @@ export default function ListView(props) {
                 <ListItemText primary={!props.editMode?"Edit Tree":"Save Tree"} />
           </ListItem>
           <ListItem button key={'feedback'} onClick={()=>{handleClick('feedback')}} selected={selectedIndex === 'feedback'}>
-                <ListItemIcon><EmailIcon /></ListItemIcon>
+                <ListItemIcon><FeedbackIcon /></ListItemIcon>
                 <ListItemText primary={"Send Feedback"} />
           </ListItem>
         </List>
@@ -113,36 +109,10 @@ export default function ListView(props) {
 
   const handleClose = () => {
     setInvalidPassword(false);
-    setFeedbackFailed(false);
     setEditView(false);
     setFeedback(false);
     setSettings(false);
   };
-
-  const handleFeedbackSubmit = () => {
-    if(feedbackText.value===""){
-      setFeedbackFailed(true);
-      return;
-    }
-    setFeedbackFailed(false);
-      const templateParams = {
-        from_name: "Family Tree User",
-        to_name: "Subhash",
-        message_html: feedbackText.value
-      };
-      emailjs
-            .send("default_service", "template_rLhbphnf", templateParams)
-            .then(
-              function(response) {
-                console.log("SUCCESS!", response.status, response.text);
-                setFeedback(false);
-              },
-              function(err) {
-                console.error("Your message was not able to be sent");
-                setFeedbackFailed(true);
-              }
-            );
-  }
 
   const handleEditSubmit = () => {
     if(editText.value === props.treeCred){
@@ -184,39 +154,6 @@ export default function ListView(props) {
           </Button>
           <Button onClick={handleEditSubmit} color="primary">
             Enter
-          </Button>
-        </DialogActions>
-    </div>
-  )};
-
-  const feedbackDialog = () => {
-    return (
-    <div>
-      <DialogTitle id="form-dialog-title">Feedback</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please provide your feedback. Also let us know if you want to update any information.
-          </DialogContentText>
-          {feedbackFailed && <DialogContentText><span style={{color: 'red'}}>Unable to send the message</span></DialogContentText>}
-          <TextField
-            autoFocus
-            margin="dense"
-            id="feedback"
-            label="Feedback"
-            type="text"
-            variant="filled"
-            multiline
-            rows={8}
-            fullWidth
-            inputRef={(c)=>{feedbackText=c}}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleFeedbackSubmit} color="primary">
-            Submit
           </Button>
         </DialogActions>
     </div>
@@ -273,9 +210,7 @@ export default function ListView(props) {
         <Dialog open={editView} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
           {editDialog()}
         </Dialog>
-        <Dialog open={feedback} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
-          {feedbackDialog()}
-        </Dialog>
+        <FeedbackDialog {...props} open={feedback} onClose={handleDialogClose} aria-labelledby="form-dialog-title"/>
         <SettingsDialog {...props} open={settings} onClose={handleDialogClose} aria-labelledby="form-dialog-title"/>
     </React.Fragment>
     </div>
