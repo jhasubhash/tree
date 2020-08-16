@@ -90,6 +90,7 @@ export default class TreeContainer extends React.PureComponent {
 	}
 
 	handleClick = (event, node) => {
+		event.preventDefault();
 		this.setState({ currentNode: node });
 		setFilter('');
 	}
