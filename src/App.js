@@ -44,7 +44,8 @@ class App extends React.PureComponent {
     this.treeContainerRef = React.createRef();
     this.state = {
       editMode : false,
-      json : {}
+      json : {},
+      treeCred : "abc123",
     }
     this.theme = createMuiTheme({
       palette: {
@@ -119,12 +120,19 @@ class App extends React.PureComponent {
     this.setState({ json: jsonData });
   }
 
+  processTreeCred = (json) => {
+    this.setState({ treeCred: json.pass });
+  }
+
   componentDidMount() {
     //initialize database
     PreferenceMgr.initPreferenceMgr();
     DB.initDatabase();
     DB.getTreeData().then((json)=>{
       this.processTreeData(json);
+    });
+    DB.getTreeCred().then((json)=>{
+      this.processTreeCred(json);
     });
   }
 
@@ -154,6 +162,7 @@ class App extends React.PureComponent {
       <ThemeProvider theme={this.theme}>
 			<div id="container" >
         <Header {...this.props}
+          treeCred = {this.state.treeCred}
           resetView={this.reset}
           editMode={this.state.editMode}
           setEditMode={this.setEditMode}

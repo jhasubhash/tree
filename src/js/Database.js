@@ -9,6 +9,8 @@ class Database {
             this.db = null;
             this.parser = null;
             this.treeDataRef = null;
+            this.treeCredRef = null;
+            this.treeCred = null;
             this.treeData = null;
         }
         return Database.instance;
@@ -27,6 +29,7 @@ class Database {
         firebase.initializeApp(firebaseConfig);
         this.db = firebase.firestore();
         this.treeDataRef = this.db.collection("tree").doc("treeData");
+        this.treeCredRef = this.db.collection("tree").doc("cred");
     }
 
     isDataPresent(objArr, obj){
@@ -39,6 +42,13 @@ class Database {
     save(jsonData){
         this.treeData = jsonData;
         return this.treeDataRef.set(jsonData);
+    }
+
+    async getTreeCred(){
+        if(this.treeCred) return this.treeData;
+        let doc = await this.treeCredRef.get();
+        this.treeCred = doc.data();
+        return this.treeCred;
     }
 
     async getTreeData(){

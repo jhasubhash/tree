@@ -145,7 +145,7 @@ export default function ListView(props) {
   }
 
   const handleEditSubmit = () => {
-    if(editText.value === 'admin333'){
+    if(editText.value === props.treeCred){
       setInvalidPassword(false);
       setEditView(false);
 		  //setActiveNode('0');
