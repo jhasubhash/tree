@@ -134,8 +134,11 @@ export default function ListView(props) {
       setInvalidPassword(false);
       setEditView(false);
 		  //setActiveNode('0');
-		  setFilter('');
+      setFilter('');
       props.setEditMode(true);
+      enqueueSnackbar("Right click on a node to edit",{ 
+        variant: 'info',
+      })
     }else{
       setInvalidPassword(true);
     }
