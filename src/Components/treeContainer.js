@@ -33,6 +33,9 @@ const AdminMenu = ({ menuId, onClickCb }) => (
     <Item onClick={() => onClickCb('Children')}>
       Add/Remove Children
     </Item>
+    <Item onClick={() => onClickCb('Remove')}>
+      Remove Person
+    </Item>
   </Menu>
 );
 

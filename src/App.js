@@ -52,8 +52,10 @@ class App extends React.PureComponent {
     this.treeContainerRef = React.createRef();
     this.state = {
       editMode : false,
+      superEditMode : false,
       json : {},
       treeCred : "abc123",
+      treeSuperCred : "",
     }
     this.theme = createMuiTheme({
       palette: {
@@ -129,7 +131,7 @@ class App extends React.PureComponent {
   }
 
   processTreeCred = (json) => {
-    this.setState({ treeCred: json.pass });
+    this.setState({ treeCred: json.pass, treeSuperCred: json.superPass });
   }
 
   componentDidMount() {
@@ -156,8 +158,11 @@ class App extends React.PureComponent {
     this.setState({ editMode: mode });
   }
 
+  setSuperEditMode = (mode)=>{
+    this.setState({ superEditMode: mode });
+  }
+
   saveTree = (cb)=>{
-    console.log(this.state.json);
     DB.save(this.state.json).then(()=>{
       console.log("Tree Data successfully written!");
       this.setEditMode(false);
@@ -165,6 +170,17 @@ class App extends React.PureComponent {
     })
     .catch(function(error) {
         console.error("Error writing Tree Data : ", error);
+        cb(false);
+    });
+  }
+
+  saveTreeBackup = (cb)=>{
+    DB.saveBackup(this.state.json).then(()=>{
+      console.log("Backup successfully written!");
+      cb(true);
+    })
+    .catch(function(error) {
+        console.error("Error writing Backup: ", error);
         cb(false);
     });
   }
@@ -183,9 +199,11 @@ class App extends React.PureComponent {
 			<div id="container" >
         <Header {...this.props}
           treeCred = {this.state.treeCred}
+          treeSuperCred = {this.state.treeSuperCred}
           resetView={this.reset}
           editMode={this.state.editMode}
           setEditMode={this.setEditMode}
+          setSuperEditMode={this.setSuperEditMode}
           saveTree={this.saveTree}/>
 				{Object.keys(this.state.json).length && <TreeContainer
 					{...this.props}
@@ -193,7 +211,10 @@ class App extends React.PureComponent {
           editMode={this.state.editMode}
           setZoomRef={this.setZoomRef}
           getNextPerson={this.getNextPerson}/>}
-        <Footer {...this.props}/>
+        <Footer {...this.props} 
+          editMode={this.state.editMode}
+          superEditMode={this.state.superEditMode} 
+          saveTreeBackup={this.saveTreeBackup}/>
 			</div>
       </SnackbarProvider>
     </ThemeProvider>);

@@ -138,12 +138,14 @@ export default function ListView(props) {
   };
 
   const handleEditSubmit = () => {
-    if(editText.value === props.treeCred){
+    if(editText.value === props.treeCred || editText.value === props.treeSuperCred){
       setInvalidPassword(false);
       setEditView(false);
 		  //setActiveNode('0');
       setFilter('');
       props.setEditMode(true);
+      if(editText.value === props.treeSuperCred)
+        props.setSuperEditMode(true);
       enqueueSnackbar("Right click on a node to edit",{ 
         variant: 'info',
       })

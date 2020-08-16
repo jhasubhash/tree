@@ -37,7 +37,9 @@ export default class Header extends React.PureComponent {
 	
 	handleCancel = ()=>{
 		this.props.setEditMode(false);
+		this.props.setSuperEditMode(false);
 	}
+
 	render() {
 		return (
 			<div id="header">

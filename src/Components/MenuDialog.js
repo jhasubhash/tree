@@ -17,10 +17,22 @@ let getNodeFromId = (nodeId, node) => {
     return null;
 }
 
+let findParentNode = (targetNode, currNode) => {
+    if(!currNode) return null;
+    for(let i=0; i< currNode.children.length; i++){
+        if(currNode.children[i].id === targetNode.id)
+            return currNode;
+        let node = findParentNode(targetNode, currNode.children[i]);
+        if(node) return node;
+    }
+    return null;
+}
+
 export default function MenuDialog(props) {
     const [openNameDialog, setOpenNameDialog] = React.useState(false);
     const [openPNameDialog, setOpenPNameDialog] = React.useState(false);
     const [openChildrenDialog, setOpenChildrenDialog] = React.useState(false);
+    const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false);
     const [childrenUpdate, setChildrenUpdate] = React.useState(false);
     const [newChildrenCnt, setNewChildrenCnt] = React.useState(0);
     let personRef = React.createRef()
@@ -35,6 +47,8 @@ export default function MenuDialog(props) {
             setOpenPNameDialog(true);
         else if(idStr === 'Children')
             setOpenChildrenDialog(true);
+        else if(idStr === 'Remove')
+            setOpenRemoveDialog(true);
     },[props]);
 
     const handleCloseNameDialog = () => {
@@ -49,6 +63,11 @@ export default function MenuDialog(props) {
 
     const handleCloseChildrenDialog = () => {
         setOpenChildrenDialog(false);
+        props.onClose();
+    };
+
+    const handleCloseRemoveDialog = () => {
+        setOpenRemoveDialog(false);
         props.onClose();
     };
 
@@ -83,6 +102,22 @@ export default function MenuDialog(props) {
 
     const handleOkChildrenDialog = () => {
         setOpenChildrenDialog(false);
+        props.onClose(true);
+    }
+
+    const handleCancelRemoveDialog = () => {
+        setOpenRemoveDialog(false);
+        props.onClose();
+    }
+
+    const handleOkRemoveDialog = () => {
+        let parent = findParentNode(currNode, props.data);
+        if(!parent) return;
+        const index = parent.children.indexOf(currNode);
+        if (index > -1) {
+            parent.children.splice(index, 1);
+        }
+        setOpenRemoveDialog(false);
         props.onClose(true);
     }
 
@@ -179,6 +214,25 @@ export default function MenuDialog(props) {
             </Button>
             </DialogActions>
         </Dialog>
+
+        <Dialog open={openRemoveDialog} onClose={handleCloseRemoveDialog} aria-labelledby="Name">
+            <DialogTitle id="form-dialog-title">{currNode.name}</DialogTitle>
+            <DialogContent>
+            <DialogContentText>
+            {currNode.name} will be removed. All the children will be removed as well.
+            Do you want to continue?
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={handleCancelRemoveDialog} color="primary">
+                No
+            </Button>
+            <Button onClick={handleOkRemoveDialog} color="primary">
+                Yes
+            </Button>
+            </DialogActions>
+        </Dialog>
+
         </div>
     );
 }

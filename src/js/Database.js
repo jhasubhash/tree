@@ -9,6 +9,7 @@ class Database {
             this.db = null;
             this.parser = null;
             this.treeDataRef = null;
+            this.treeDataBackupRef = null;
             this.treeCredRef = null;
             this.treeCred = null;
             this.treeData = null;
@@ -37,6 +38,7 @@ class Database {
             }
         });
         this.treeDataRef = this.db.collection("tree").doc("treeData");
+        this.treeDataBackupRef = this.db.collection("tree").doc("treeDataBackup");
         this.treeCredRef = this.db.collection("tree").doc("cred");
     }
 
@@ -50,6 +52,10 @@ class Database {
     save(jsonData){
         this.treeData = jsonData;
         return this.treeDataRef.set(jsonData);
+    }
+
+    saveBackup(jsonData){
+        return this.treeDataBackupRef.set(jsonData);
     }
 
     async getTreeCred(){
