@@ -73,7 +73,8 @@ export default function FeedbackDialog(props) {
         <DialogTitle id="form-dialog-title">Feedback</DialogTitle>
         <DialogContent>
             <DialogContentText>
-            Please provide your feedback. Also let us know if you want to update any information.
+            Your feedback is valuable. Also let me know if you want to update any information. Reach out to me at <b><a style={{color:PreferenceMgr.getFontColor()}}href = "mailto: subhashjha.mail@gmail.com">subhashjha.mail@gmail.com</a></b>.<br/>
+            You can also use the form below. Please include your details. Thankyou
             </DialogContentText>
             {feedbackFailed && <DialogContentText><span style={{color: 'red'}}>Unable to send the message</span></DialogContentText>}
             <TextField
