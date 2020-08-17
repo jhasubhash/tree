@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ReactHtmlParser from 'react-html-parser'; 
 import PreferenceMgr from '../js/PreferenceMgr';
 import DB from '../js/Database';
 
@@ -196,7 +197,7 @@ export default function MenuDialog(props) {
     return (
         <div>
         <Dialog open={openNameDialog} onClose={handleCloseNameDialog} aria-labelledby="Name">
-            <DialogTitle id="form-dialog-title">{currNode.name}</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>{currNode.name}</DialogTitle>
             <DialogContent>
             <DialogContentText>
                 Edit name :
@@ -216,7 +217,7 @@ export default function MenuDialog(props) {
         </Dialog>
 
         <Dialog open={openPNameDialog} onClose={handleClosePNameDialog} aria-labelledby="Name">
-            <DialogTitle id="form-dialog-title">{currNode.name}</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>{currNode.name}</DialogTitle>
             <DialogContent>
             <DialogContentText>
                 Edit partner's name :
@@ -236,7 +237,7 @@ export default function MenuDialog(props) {
         </Dialog>
 
         <Dialog open={openChildrenDialog} onClose={handleCloseChildrenDialog} aria-labelledby="Name">
-            <DialogTitle id="form-dialog-title">{currNode.name}</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>{currNode.name}</DialogTitle>
             <DialogContent>
             <DialogContentText>
                 Add/Remove Children :
@@ -260,7 +261,7 @@ export default function MenuDialog(props) {
         </Dialog>
 
         <Dialog open={openRemoveDialog} onClose={handleCloseRemoveDialog} aria-labelledby="Name">
-            <DialogTitle id="form-dialog-title">{currNode.name}</DialogTitle>
+            <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>{currNode.name}</DialogTitle>
             <DialogContent>
             <DialogContentText>
             {currNode.name} will be removed. All the children will be removed as well.
@@ -278,7 +279,7 @@ export default function MenuDialog(props) {
         </Dialog>
 
         <Dialog open={openEditInfoDialog} onClose={handleCloseEditInfoDialog}  aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">General Information</DialogTitle>
+        <DialogTitle id="form-dialog-title" style={{textAlign:'center'}}>General Information</DialogTitle>
         <DialogContent>
             <DialogContentText>
             Please add or edit the information related to {currNode.name}
@@ -311,13 +312,13 @@ export default function MenuDialog(props) {
         <DialogTitle id="form-dialog-title" 
             style={{backgroundColor:PreferenceMgr.getBackgroundColor(), 
                 backgroundImage:PreferenceMgr.getBackgroundUrl(),
-                color:PreferenceMgr.getFontColor()}}>{currNode.name} & {currNode.partner.name}</DialogTitle>
+                color:PreferenceMgr.getFontColor(),
+                textAlign:'center'}}>{currNode.name} {currNode.partner.name}</DialogTitle>
         <DialogContent 
             style={{backgroundColor:PreferenceMgr.getBackgroundColor(), 
-                backgroundImage:PreferenceMgr.getBackgroundUrl(),
                 color:PreferenceMgr.getFontColor()}}>
-            <DialogContentText style={{color:PreferenceMgr.getFontColor()}}>
-            {userInfo}
+            <DialogContentText component={'span'} style={{color:PreferenceMgr.getFontColor()}}>
+                <div>{ReactHtmlParser(userInfo)}</div>
             </DialogContentText>
         </DialogContent>
         <DialogActions 
