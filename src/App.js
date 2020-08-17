@@ -34,7 +34,7 @@ const propTypes = {
   linkOpacity: PropTypes.number.isRequired,
   fontFamily: PropTypes.string.isRequired,
   nodeShape: PropTypes.string.isRequired,
-  serviceWorker: PropTypes.object.isRequired
+  serviceWorker: PropTypes.object
 };
 
 
@@ -95,12 +95,21 @@ class App extends React.PureComponent {
 		return root;
   }
 
+  getMaxIdAllocated(root){
+    if(!root) return 0;
+    let id = Math.max(0, root.id);
+    for(let i=0; i<root.children.length; i++){
+        id = Math.max(id, this.getMaxIdAllocated(root.children[i]));
+    }
+    return id;
+  }
+
   getNextPerson = ()=>{
     let nxt = {};
     nxt.name = "New Child";
     nxt.id = (this.id++).toString();
     nxt.children = [];
-    nxt.partner = {name:""};
+    nxt.partner = {name:"", id:(this.id++).toString()};
     return nxt;
   }
 
@@ -124,9 +133,11 @@ class App extends React.PureComponent {
   processTreeData = (jsonData)=>{
     if(!jsonData || !Object.keys(jsonData).length)
       jsonData = localJson;
-    jsonData = this.addIdToNode(jsonData);
-    this.addParent(jsonData);
-    this.addIdToPartner(jsonData);
+    //jsonData = this.addIdToNode(jsonData);
+    //this.addParent(jsonData);
+    //this.addIdToPartner(jsonData);
+    this.id = this.getMaxIdAllocated(jsonData)+1;
+    console.log("next Id available: "+this.id);
     this.setState({ json: jsonData });
   }
 
@@ -166,10 +177,12 @@ class App extends React.PureComponent {
     DB.save(this.state.json).then(()=>{
       console.log("Tree Data successfully written!");
       this.setEditMode(false);
+      if(cb)
       cb(true);
     })
     .catch(function(error) {
         console.error("Error writing Tree Data : ", error);
+        if(cb)
         cb(false);
     });
   }

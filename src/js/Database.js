@@ -13,6 +13,7 @@ class Database {
             this.treeCredRef = null;
             this.treeCred = null;
             this.treeData = null;
+            this.userInfo = {};
         }
         return Database.instance;
     }
@@ -40,6 +41,7 @@ class Database {
         this.treeDataRef = this.db.collection("tree").doc("treeData");
         this.treeDataBackupRef = this.db.collection("tree").doc("treeDataBackup");
         this.treeCredRef = this.db.collection("tree").doc("cred");
+        this.userInfoDescRef = this.db.collection("tree").doc("userInfo").collection("description");
     }
 
     isDataPresent(objArr, obj){
@@ -51,7 +53,8 @@ class Database {
 
     save(jsonData){
         this.treeData = jsonData;
-        return this.treeDataRef.set(jsonData);
+        return this.treeDataRef.set(jsonData)
+                .then(()=>this.saveAllUserInfo());
     }
 
     saveBackup(jsonData){
@@ -70,6 +73,34 @@ class Database {
         let doc = await this.treeDataRef.get();
         this.treeData = doc.data();
         return this.treeData;
+    }
+
+    async getUserInfo(id){
+        if(this.userInfo[id]) return this.userInfo[id].info;
+        let infoDoc = await this.userInfoDescRef.doc(id).get();
+        let json = infoDoc.exists?infoDoc.data():{info:""};
+        this.userInfo[id] = {}; 
+        this.userInfo[id].info = json.info;
+        this.userInfo[id].changed = false;
+        return json.info;
+    }
+
+    setUserInfo(id, info){
+        this.userInfo[id].info = info;
+        this.userInfo[id].changed = true;
+    }
+
+    async saveUserInfo(id){
+        await this.userInfoDescRef.doc(id).set({info:this.userInfo[id].info});
+    }
+
+    async saveAllUserInfo(){
+        let promises = []
+        for (const key of Object.keys(this.userInfo)){
+            if(this.userInfo[key].changed)
+                promises.push(this.saveUserInfo(key));
+        }
+        return Promise.all(promises);
     }
 }
 

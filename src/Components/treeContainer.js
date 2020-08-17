@@ -22,21 +22,35 @@ const propTypes = {
 
 const menuId = 'adminMenu';
 
-const AdminMenu = ({ menuId, onClickCb }) => (
-  <Menu id={menuId} theme={theme.dark} animation={animation.zoom}>
-    <Item onClick={() => onClickCb('Primary')}>
-      Rename
-    </Item>
-    <Item onClick={() => onClickCb('Partner')}>
-      Rename Partner
-    </Item>
-    <Item onClick={() => onClickCb('Children')}>
-      Add/Remove Children
-    </Item>
-    <Item onClick={() => onClickCb('Remove')}>
-      Remove Person
-    </Item>
-  </Menu>
+const AdminMenu = ({ menuId, onClickCb, editMode }) => (
+	<div>
+	{editMode &&
+		<Menu id={menuId} theme={theme.dark} animation={animation.zoom}>
+			<Item onClick={() => onClickCb('Primary')}>
+			Rename
+			</Item>
+			<Item onClick={() => onClickCb('Partner')}>
+			Rename Partner
+			</Item>
+			<Item onClick={() => onClickCb('Children')}>
+			Add/Remove Children
+			</Item>
+			<Item onClick={() => onClickCb('Remove')}>
+			Remove Person
+			</Item>
+			<Item onClick={() => onClickCb('EditInfo')}>
+			Add/Edit Info
+			</Item>
+		</Menu>
+	}
+	{ !editMode &&
+		<Menu id={menuId} theme={theme.dark} animation={animation.zoom}>
+			<Item onClick={() => onClickCb('Info')}>
+				Get More Info
+			</Item>
+		</Menu>
+	}
+	</div>
 );
 
 export default class TreeContainer extends React.PureComponent {
@@ -101,9 +115,7 @@ export default class TreeContainer extends React.PureComponent {
 	handleRightClick = (ev, node) => {
 		ev.preventDefault();
 		this.setState({ editNode: node });
-		if(this.props.editMode){
-			contextMenu.show({id: menuId, event: ev });
-		}
+		contextMenu.show({id: menuId, event: ev });
 	}
 
 	getRoot(json, nodeId) {
@@ -206,7 +218,7 @@ export default class TreeContainer extends React.PureComponent {
 
 		return (
 			<div>
-			<AdminMenu menuId={menuId} onClickCb={this.adminMenuCb}/>
+			<AdminMenu menuId={menuId} onClickCb={this.adminMenuCb} editMode={this.props.editMode}/>
 			{this.state.menuDialog && 
 			<MenuDialog dialogId={this.state.dialogId} 
 							nodeId={this.state.editNode} 

@@ -21,11 +21,6 @@ export default createStore(
 		fontFamily: FontFamily,
 		nodeShape: NodeShape,
 		serviceWorker: ServiceWorker,
-	}),
-	{
-		serviceWorkerInitialized: false,
-		serviceWorkerUpdated: false,
-		serviceWorkerRegistration: null,
-	},
+	}),undefined,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

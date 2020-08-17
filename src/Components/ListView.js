@@ -76,7 +76,7 @@ export default function ListView(props) {
       if(!props.editMode)
         setEditView(open);
       else{
-        props.handleSaveTree(saveCB);
+        props.handleSaveTree(undefined,saveCB);
         //props.setEditMode(false);
       }
     }

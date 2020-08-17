@@ -31,7 +31,7 @@ export default class Header extends React.PureComponent {
 		setFilter('');
 	}
 
-	handleSave = (cb)=>{
+	handleSave = (ev, cb)=>{
 		this.props.saveTree(cb);
 	}
 	

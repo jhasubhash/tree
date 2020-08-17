@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DB from '../js/Database';
 
 let getNodeFromId = (nodeId, node) => {
     if(node.id === nodeId) return node;
@@ -17,7 +18,7 @@ let getNodeFromId = (nodeId, node) => {
     return null;
 }
 
-let findParentNode = (targetNode, currNode) => {
+const findParentNode = (targetNode, currNode) => {
     if(!currNode) return null;
     for(let i=0; i< currNode.children.length; i++){
         if(currNode.children[i].id === targetNode.id)
@@ -28,16 +29,25 @@ let findParentNode = (targetNode, currNode) => {
     return null;
 }
 
+
 export default function MenuDialog(props) {
     const [openNameDialog, setOpenNameDialog] = React.useState(false);
     const [openPNameDialog, setOpenPNameDialog] = React.useState(false);
     const [openChildrenDialog, setOpenChildrenDialog] = React.useState(false);
     const [openRemoveDialog, setOpenRemoveDialog] = React.useState(false);
+    const [openEditInfoDialog, setOpenEditInfoDialog] = React.useState(false);
+    const [openInfoDialog, setOpenInfoDialog] = React.useState(false);
     const [childrenUpdate, setChildrenUpdate] = React.useState(false);
     const [newChildrenCnt, setNewChildrenCnt] = React.useState(0);
+    const [currNode, setCurrNode] = React.useState(getNodeFromId(props.nodeId, props.data));
+    const [userInfo, setUserInfo] = React.useState("");
     let personRef = React.createRef()
     let partnerRef = React.createRef()
-    let [currNode, setCurrNode] = React.useState(getNodeFromId(props.nodeId, props.data));
+    let infoRef = React.createRef();
+
+    DB.getUserInfo(currNode.id).then((info)=>{
+        setUserInfo(info);
+    });
 
     React.useEffect(() => {
         let idStr = props.dialogId;
@@ -49,6 +59,10 @@ export default function MenuDialog(props) {
             setOpenChildrenDialog(true);
         else if(idStr === 'Remove')
             setOpenRemoveDialog(true);
+        else if(idStr === 'EditInfo')
+            setOpenEditInfoDialog(true);
+        else if(idStr === 'Info')
+            setOpenInfoDialog(true);
     },[props]);
 
     const handleCloseNameDialog = () => {
@@ -70,6 +84,32 @@ export default function MenuDialog(props) {
         setOpenRemoveDialog(false);
         props.onClose();
     };
+
+    const handleCloseEditInfoDialog = () => {
+        setOpenEditInfoDialog(false);
+        props.onClose();
+    };
+
+    const handleCancelEditInfoDialog = () => {
+        setOpenEditInfoDialog(false);
+        props.onClose();
+    }
+
+    const handleOkEditInfoDialog = () => {
+        setUserInfo(currNode.id, infoRef.value);
+        DB.setUserInfo(currNode.id, infoRef.value);
+        setOpenEditInfoDialog(false);
+        props.onClose(true);
+    }
+
+    const handleCloseInfoDialog = () => {
+        setOpenInfoDialog(false);
+        props.onClose();
+    };
+
+    const handleOkInfoDialog = () => {
+        handleCloseInfoDialog();
+    }
 
     const handleCancelNameDialog = () => {
         setOpenNameDialog(false);
@@ -139,9 +179,12 @@ export default function MenuDialog(props) {
     
     const handleAddChild = () => {
         setNewChildrenCnt(newChildrenCnt+1);
-        currNode.children.push(props.getNextPerson());
+        let newNode = props.getNextPerson();
+        newNode.parent = currNode.id;
+        currNode.children.push(newNode);
         setChildrenUpdate(!childrenUpdate);
     }
+
     const handleRemoveChild = () => {
         if(!newChildrenCnt) return;
         setNewChildrenCnt(newChildrenCnt-1);
@@ -231,6 +274,50 @@ export default function MenuDialog(props) {
                 Yes
             </Button>
             </DialogActions>
+        </Dialog>
+
+        <Dialog open={openEditInfoDialog} onClose={handleCloseEditInfoDialog}  aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">General Information</DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+            Please add or edit the information related to {currNode.name}
+            </DialogContentText>
+            <TextField
+            defaultValue={userInfo}
+            autoFocus
+            margin="dense"
+            id="info"
+            label="Info"
+            type="text"
+            variant="filled"
+            multiline
+            rows={8}
+            fullWidth
+            inputRef={(c)=>{infoRef=c}}
+            />
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleCancelEditInfoDialog} color="primary">
+            Cancel
+            </Button>
+            <Button onClick={handleOkEditInfoDialog} color="primary">
+            Submit
+            </Button>
+        </DialogActions>
+        </Dialog>
+
+        <Dialog open={openInfoDialog} onClose={handleCloseInfoDialog}  aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{currNode.name}  {currNode.partner.name}</DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+            {userInfo}
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleOkInfoDialog} color="primary">
+            Ok
+            </Button>
+        </DialogActions>
         </Dialog>
 
         </div>
