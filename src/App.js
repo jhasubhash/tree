@@ -139,6 +139,11 @@ class App extends React.PureComponent {
     this.id = this.getMaxIdAllocated(jsonData)+1;
     console.log("next Id available: "+this.id);
     this.setState({ json: jsonData });
+    
+    //start fetching user Info in background
+    DB.getAllUserInfo(this.id-1).then(() => {
+      console.log("All UserInfo fetched")
+    });
   }
 
   processTreeCred = (json) => {

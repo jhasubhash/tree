@@ -201,6 +201,8 @@ class PreferenceMgr {
     getBackgroundUrl(textureName){
         if(textureName === 'none')
             return textureName;
+        if(textureName === undefined)
+            return 'url(https://www.transparenttextures.com/patterns/'+this.preferences.textureName+'.png)';
         return 'url(https://www.transparenttextures.com/patterns/'+textureName+'.png)';
     }
 

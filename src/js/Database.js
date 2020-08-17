@@ -85,6 +85,17 @@ class Database {
         return json.info;
     }
 
+    async getAllUserInfo(maxId){
+        let promises = []
+        for(let i=0; i<= parseInt(maxId); i++){
+            let id = i.toString();
+            if(!this.userInfo[id]){
+                promises.push(this.getUserInfo(id));
+            }
+        }
+        return Promise.all(promises);
+    }
+
     setUserInfo(id, info){
         this.userInfo[id].info = info;
         this.userInfo[id].changed = true;

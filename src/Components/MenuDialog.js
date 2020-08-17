@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import PreferenceMgr from '../js/PreferenceMgr';
 import DB from '../js/Database';
 
 let getNodeFromId = (nodeId, node) => {
@@ -307,14 +308,23 @@ export default function MenuDialog(props) {
         </Dialog>
 
         <Dialog open={openInfoDialog} onClose={handleCloseInfoDialog}  aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{currNode.name}  {currNode.partner.name}</DialogTitle>
-        <DialogContent>
-            <DialogContentText>
+        <DialogTitle id="form-dialog-title" 
+            style={{backgroundColor:PreferenceMgr.getBackgroundColor(), 
+                backgroundImage:PreferenceMgr.getBackgroundUrl(),
+                color:PreferenceMgr.getFontColor()}}>{currNode.name} & {currNode.partner.name}</DialogTitle>
+        <DialogContent 
+            style={{backgroundColor:PreferenceMgr.getBackgroundColor(), 
+                backgroundImage:PreferenceMgr.getBackgroundUrl(),
+                color:PreferenceMgr.getFontColor()}}>
+            <DialogContentText style={{color:PreferenceMgr.getFontColor()}}>
             {userInfo}
             </DialogContentText>
         </DialogContent>
-        <DialogActions>
-            <Button onClick={handleOkInfoDialog} color="primary">
+        <DialogActions 
+            style={{backgroundColor:PreferenceMgr.getBackgroundColor(), 
+                backgroundImage:PreferenceMgr.getBackgroundUrl(),
+                color:PreferenceMgr.getFontColor()}}>
+            <Button onClick={handleOkInfoDialog} variant='outlined' color="primary">
             Ok
             </Button>
         </DialogActions>
