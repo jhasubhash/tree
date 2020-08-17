@@ -284,6 +284,9 @@ export default function MenuDialog(props) {
             <DialogContentText>
             Please add or edit the information related to {currNode.name}
             </DialogContentText>
+            <DialogContentText >
+            <span style={{color:'red'}}> Accepts html content as well</span>
+            </DialogContentText>
             <TextField
             defaultValue={userInfo}
             autoFocus
