@@ -130,7 +130,7 @@ export default function MenuDialog(props) {
     }
 
     const handleOkPNameDialog = () => {
-        currNode.name = partnerRef.value;
+        currNode.partner.name = partnerRef.value;
         setOpenPNameDialog(false);
         props.onClose(true);
     }
